@@ -24,8 +24,8 @@ import {
 import { getDisplayName } from "../helpers";
 import { DeSoIdentityContext } from "react-deso-protocol";
 import { Welcome } from "../components/Welcome";
-import { SetUsername } from "../components/SetUsername";
-
+import { IconCheck } from "@tabler/icons-react";
+import { notifications } from "@mantine/notifications";
 export const SignAndSubmitTx = () => {
   const { currentUser, isLoading } = useContext(DeSoIdentityContext);
   const [newUsername, setNewUsername] = useState("");
@@ -218,7 +218,12 @@ export const SignAndSubmitTx = () => {
                       VideoURLs: [],
                     },
                   }).then((resp) => {
-                    alert("Post submitted!");
+                    notifications.show({
+                      title: "Success",
+                      icon: <IconCheck size="1.1rem" />,
+                      color: "green",
+                      message: "Post was successfully submitted!",
+                    });
                   });
 
                   // Reset the form after submission

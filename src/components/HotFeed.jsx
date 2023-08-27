@@ -34,10 +34,13 @@ import {
   IconMessageCircle,
   IconScriptPlus,
   IconScriptMinus,
-  IconMessageShare
+  IconMessageShare,
+  IconCheck,
 } from "@tabler/icons-react";
 import { useNavigate } from "react-router";
 import { DeSoIdentityContext } from "react-deso-protocol";
+import { notifications } from "@mantine/notifications";
+
 const useStyles = createStyles((theme) => ({
   comment: {
     padding: `${theme.spacing.lg}px ${theme.spacing.xl}px`,
@@ -201,18 +204,18 @@ export const HotFeed = () => {
               >
                 <Group position="right">
                   <Tooltip label="Go to Post">
-                <ActionIcon  color="blue" size="sm" variant="light"
-          onClick={() => {
-            navigate(
-              `/post/${post.PostHashHex}`
-            );
-          }}
-         
-        >
-<IconMessageShare />
-</ActionIcon>
-</Tooltip>
-</Group>
+                    <ActionIcon
+                      color="blue"
+                      size="sm"
+                      variant="light"
+                      onClick={() => {
+                        navigate(`/post/${post.PostHashHex}`);
+                      }}
+                    >
+                      <IconMessageShare />
+                    </ActionIcon>
+                  </Tooltip>
+                </Group>
                 <Center>
                   <ActionIcon
                     onClick={() => {
@@ -272,15 +275,26 @@ export const HotFeed = () => {
 
                 <Space h="md" />
                 {post.PostExtraData?.EmbedVideoURL && (
-          
-          <Group style={{ height: "750px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-  
-  <iframe style={{ height: "100%", border: "none", borderRadius: "8px" }} title="embed" src={post.PostExtraData.EmbedVideoURL} />
-</Group>
-
-
-        )}
-   {post.VideoURLs && (
+                  <Group
+                    style={{
+                      height: "750px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <iframe
+                      style={{
+                        height: "100%",
+                        border: "none",
+                        borderRadius: "8px",
+                      }}
+                      title="embed"
+                      src={post.PostExtraData.EmbedVideoURL}
+                    />
+                  </Group>
+                )}
+                {post.VideoURLs && (
                   <iframe
                     style={{ width: "100%", height: "100%" }}
                     src={post.VideoURLs}
@@ -316,19 +330,21 @@ export const HotFeed = () => {
                     className={classes.comment}
                   >
                     <Group position="right">
-                  <Tooltip label="Go to Post">
-                <ActionIcon
-          onClick={() => {
-            navigate(
-              `/post/${post.RepostedPostEntryResponse.PostHashHex}`
-            );
-          }}
-          color="blue" size="sm" variant="light"
-        >
-<IconMessageShare />
-</ActionIcon>
-</Tooltip>
-</Group>
+                      <Tooltip label="Go to Post">
+                        <ActionIcon
+                          onClick={() => {
+                            navigate(
+                              `/post/${post.RepostedPostEntryResponse.PostHashHex}`
+                            );
+                          }}
+                          color="blue"
+                          size="sm"
+                          variant="light"
+                        >
+                          <IconMessageShare />
+                        </ActionIcon>
+                      </Tooltip>
+                    </Group>
                     <Center>
                       <ActionIcon
                         onClick={() => {
@@ -395,15 +411,30 @@ export const HotFeed = () => {
                     </Spoiler>
 
                     <Space h="md" />
-                    {post.RepostedPostEntryResponse.PostExtraData?.EmbedVideoURL && (
-          
-          <Group style={{ height: "750px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-  
-  <iframe style={{ height: "100%", border: "none", borderRadius: "8px" }} title="embed" src={post.RepostedPostEntryResponse.PostExtraData.EmbedVideoURL} />
-</Group>
-
-
-        )}
+                    {post.RepostedPostEntryResponse.PostExtraData
+                      ?.EmbedVideoURL && (
+                      <Group
+                        style={{
+                          height: "750px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <iframe
+                          style={{
+                            height: "100%",
+                            border: "none",
+                            borderRadius: "8px",
+                          }}
+                          title="embed"
+                          src={
+                            post.RepostedPostEntryResponse.PostExtraData
+                              .EmbedVideoURL
+                          }
+                        />
+                      </Group>
+                    )}
                     {post.RepostedPostEntryResponse.VideoURLs && (
                       <iframe
                         style={{ width: "100%", height: "100%" }}
@@ -413,8 +444,6 @@ export const HotFeed = () => {
                     )}
                     {post.RepostedPostEntryResponse.ImageURLs &&
                       post.RepostedPostEntryResponse.ImageURLs.length > 0 && (
-                        
-                        
                         <Group position="center">
                           <UnstyledButton
                             onClick={() => {
@@ -435,8 +464,6 @@ export const HotFeed = () => {
                       )}
                   </Paper>
                 )}
-
-             
 
                 <Space h="md" />
 

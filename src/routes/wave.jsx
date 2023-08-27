@@ -9,10 +9,10 @@ import {
   IconScriptPlus,
   IconScriptMinus,
   IconMessageShare,
-  IconScreenShare, 
+  IconScreenShare,
   IconCheck,
   IconHeartHandshake,
-  IconX
+  IconX,
 } from "@tabler/icons-react";
 import { GiWaveCrest } from "react-icons/gi";
 import {
@@ -26,13 +26,13 @@ import {
   submitPost,
   createPostAssociation,
   sendDiamonds,
-  sendDeso, 
-  getExchangeRates
+  sendDeso,
+  getExchangeRates,
 } from "deso-protocol";
 import {
   Grid,
   CopyButton,
-  Popover, 
+  Popover,
   Avatar,
   Paper,
   Group,
@@ -55,9 +55,9 @@ import {
   Textarea,
   Collapse,
   UnstyledButton,
-  List
+  List,
 } from "@mantine/core";
-import { notifications } from '@mantine/notifications';
+import { notifications } from "@mantine/notifications";
 import { DeSoIdentityContext } from "react-deso-protocol";
 import { RiUserUnfollowLine } from "react-icons/ri";
 import { useDisclosure } from "@mantine/hooks";
@@ -115,11 +115,11 @@ export const Wave = () => {
   const [isFollowingUser, setisFollowingUser] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const [opened, { open, close }] = useDisclosure(false);
- 
+
   const [openedSub, { open: openSub, close: closeSub }] = useDisclosure(false);
-   // Retrieve the user's DESO balance from profile.DESOBalanceNanos
-   const userDESOBalance = profile.DESOBalanceNanos;
-   console.log(userDESOBalance)
+  // Retrieve the user's DESO balance from profile.DESOBalanceNanos
+  const userDESOBalance = profile.DESOBalanceNanos;
+  console.log(userDESOBalance);
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -129,7 +129,6 @@ export const Wave = () => {
         });
 
         setProfile(profileData.Profile);
-       
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
@@ -168,7 +167,7 @@ export const Wave = () => {
             PublicKeyBase58Check: currentUser.PublicKeyBase58Check,
             IsFollowingPublicKeyBase58Check: profile.PublicKeyBase58Check,
           });
-       
+
           setisFollowingUser(result.IsFollowing);
         } catch (error) {
           console.error("Error checking if following:", error);
@@ -185,7 +184,7 @@ export const Wave = () => {
         PublicKeyBase58Check: currentUser.PublicKeyBase58Check,
         IsFollowingPublicKeyBase58Check: profile.PublicKeyBase58Check,
       });
-      
+
       setisFollowingUser(result.IsFollowing);
     } catch (error) {
       console.error("Error checking if following:", error);
@@ -225,43 +224,65 @@ export const Wave = () => {
   };
   const subTier1 = async () => {
     try {
-     
-      const exchangeRateData = await getExchangeRates({"PublicKeyBase58Check": profile.PublicKeyBase58Check});
-      console.log(exchangeRateData)
+      const exchangeRateData = await getExchangeRates({
+        PublicKeyBase58Check: profile.PublicKeyBase58Check,
+      });
+      console.log(exchangeRateData);
 
       const subscriptionAmount = 5; // $5 USD
-      const usdCentsPerDeSoExchangeRate = exchangeRateData.USDCentsPerDeSoCoinbase;
+      const usdCentsPerDeSoExchangeRate =
+        exchangeRateData.USDCentsPerDeSoCoinbase;
       const nanosPerDeSo = 0.000000001; // 1 Nano is 0.000000001 DeSo
-  
+
       // Calculate the equivalent amount in DeSo
-      const equivalentDeSoAmount = subscriptionAmount * 100 / usdCentsPerDeSoExchangeRate;
-  
+      const equivalentDeSoAmount =
+        (subscriptionAmount * 100) / usdCentsPerDeSoExchangeRate;
+
       // Calculate the equivalent amount in Nanos
-const equivalentNanosAmount = Math.floor(equivalentDeSoAmount / nanosPerDeSo);
+      const equivalentNanosAmount = Math.floor(
+        equivalentDeSoAmount / nanosPerDeSo
+      );
 
-// Convert to an integer
-const equivalentNanosInt = Number(equivalentNanosAmount);
+      // Convert to an integer
+      const equivalentNanosInt = Number(equivalentNanosAmount);
 
-       // Check if the user has enough balance
-       if (userDESOBalance < equivalentNanosInt) {
+      // Check if currentUser exists
+      if (!currentUser) {
         notifications.show({
-          title: 'Insufficient Funds',
+          title: "Login Required",
           icon: <IconX size="1.1rem" />,
-          color: 'red',
-          message: 'Hey there, please add DeSo to your Wallet!',
-        })
-        
-      } else {
-        // Proceed with the API call
-        await sendDeso( {
-          "SenderPublicKeyBase58Check": currentUser.PublicKeyBase58Check,
-          "RecipientPublicKeyOrUsername": profile.PublicKeyBase58Check,
-          "AmountNanos": equivalentNanosInt,
-          "MinFeeRateNanosPerKB": 1000
+          color: "red",
+          message: "Please Signup or login to subscribe.",
         });
       }
-      
-  
+      // Check if currentUser's public key matches profile's public key
+      else if (
+        currentUser.PublicKeyBase58Check === profile.PublicKeyBase58Check
+      ) {
+        notifications.show({
+          title: "Error",
+          icon: <IconX size="1.1rem" />,
+          color: "red",
+          message: "You cannot subscribe to yourself.",
+        });
+      }
+      // Check if the user has enough balance
+      else if (userDESOBalance < equivalentNanosInt) {
+        notifications.show({
+          title: "Insufficient Funds",
+          icon: <IconX size="1.1rem" />,
+          color: "red",
+          message: "Hey there, please add DeSo to your Wallet!",
+        });
+      } else {
+        // Proceed with the API call
+        await sendDeso({
+          SenderPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
+          RecipientPublicKeyOrUsername: profile.PublicKeyBase58Check,
+          AmountNanos: equivalentNanosInt,
+          MinFeeRateNanosPerKB: 1000,
+        });
+      }
     } catch (error) {
       console.error("Error subscribing to User:", error);
     }
@@ -269,40 +290,45 @@ const equivalentNanosInt = Number(equivalentNanosAmount);
 
   const subTier2 = async () => {
     try {
-      const exchangeRateData = await getExchangeRates({"PublicKeyBase58Check": profile.PublicKeyBase58Check});
-      console.log(exchangeRateData)
+      const exchangeRateData = await getExchangeRates({
+        PublicKeyBase58Check: profile.PublicKeyBase58Check,
+      });
+      console.log(exchangeRateData);
 
       const subscriptionAmount = 15; // $5 USD
-      const usdCentsPerDeSoExchangeRate = exchangeRateData.USDCentsPerDeSoCoinbase;
+      const usdCentsPerDeSoExchangeRate =
+        exchangeRateData.USDCentsPerDeSoCoinbase;
       const nanosPerDeSo = 0.000000001; // 1 Nano is 0.000000001 DeSo
-  
+
       // Calculate the equivalent amount in DeSo
-      const equivalentDeSoAmount = subscriptionAmount * 100 / usdCentsPerDeSoExchangeRate;
-  
+      const equivalentDeSoAmount =
+        (subscriptionAmount * 100) / usdCentsPerDeSoExchangeRate;
+
       // Calculate the equivalent amount in Nanos
-const equivalentNanosAmount = Math.floor(equivalentDeSoAmount / nanosPerDeSo);
+      const equivalentNanosAmount = Math.floor(
+        equivalentDeSoAmount / nanosPerDeSo
+      );
 
-// Convert to an integer
-const equivalentNanosInt = Number(equivalentNanosAmount);
+      // Convert to an integer
+      const equivalentNanosInt = Number(equivalentNanosAmount);
 
-       // Check if the user has enough balance
-       if (userDESOBalance < equivalentNanosInt) {
+      // Check if the user has enough balance
+      if (userDESOBalance < equivalentNanosInt) {
         notifications.show({
-          title: 'Insufficient Funds',
+          title: "Insufficient Funds",
           icon: <IconX size="1.1rem" />,
-          color: 'red',
-          message: 'Hey there, please add DeSo to your Wallet!',
-        })
+          color: "red",
+          message: "Hey there, please add DeSo to your Wallet!",
+        });
       } else {
         // Proceed with the API call
-        await sendDeso( {
-          "SenderPublicKeyBase58Check": currentUser.PublicKeyBase58Check,
-          "RecipientPublicKeyOrUsername": profile.PublicKeyBase58Check,
-          "AmountNanos": equivalentNanosInt,
-          "MinFeeRateNanosPerKB": 1000
+        await sendDeso({
+          SenderPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
+          RecipientPublicKeyOrUsername: profile.PublicKeyBase58Check,
+          AmountNanos: equivalentNanosInt,
+          MinFeeRateNanosPerKB: 1000,
         });
       }
-
     } catch (error) {
       console.error("Error subscribing to User:", error);
     }
@@ -310,40 +336,65 @@ const equivalentNanosInt = Number(equivalentNanosAmount);
 
   const subTier3 = async () => {
     try {
-      const exchangeRateData = await getExchangeRates({"PublicKeyBase58Check": profile.PublicKeyBase58Check});
-      console.log(exchangeRateData)
+      const exchangeRateData = await getExchangeRates({
+        PublicKeyBase58Check: profile.PublicKeyBase58Check,
+      });
+      console.log(exchangeRateData);
 
       const subscriptionAmount = 25; // $5 USD
-      const usdCentsPerDeSoExchangeRate = exchangeRateData.USDCentsPerDeSoCoinbase;
+      const usdCentsPerDeSoExchangeRate =
+        exchangeRateData.USDCentsPerDeSoCoinbase;
       const nanosPerDeSo = 0.000000001; // 1 Nano is 0.000000001 DeSo
-  
+
       // Calculate the equivalent amount in DeSo
-      const equivalentDeSoAmount = subscriptionAmount * 100 / usdCentsPerDeSoExchangeRate;
-  
+      const equivalentDeSoAmount =
+        (subscriptionAmount * 100) / usdCentsPerDeSoExchangeRate;
+
       // Calculate the equivalent amount in Nanos
-const equivalentNanosAmount = Math.floor(equivalentDeSoAmount / nanosPerDeSo);
+      const equivalentNanosAmount = Math.floor(
+        equivalentDeSoAmount / nanosPerDeSo
+      );
 
-// Convert to an integer
-const equivalentNanosInt = Number(equivalentNanosAmount);
+      // Convert to an integer
+      const equivalentNanosInt = Number(equivalentNanosAmount);
 
-       // Check if the user has enough balance
-       if (userDESOBalance < equivalentNanosInt) {
+      // Check if currentUser exists
+      if (!currentUser) {
         notifications.show({
-          title: 'Insufficient Funds',
+          title: "Login Required",
           icon: <IconX size="1.1rem" />,
-          color: 'red',
-          message: 'Hey there, please add DeSo to your Wallet!',
-        })
-      } else {
-        // Proceed with the API call
-        await sendDeso( {
-          "SenderPublicKeyBase58Check": currentUser.PublicKeyBase58Check,
-          "RecipientPublicKeyOrUsername": profile.PublicKeyBase58Check,
-          "AmountNanos": equivalentNanosInt,
-          "MinFeeRateNanosPerKB": 1000
+          color: "red",
+          message: "Please log in to subscribe.",
         });
       }
-
+      // Check if currentUser's public key matches profile's public key
+      else if (
+        currentUser.PublicKeyBase58Check === profile.PublicKeyBase58Check
+      ) {
+        notifications.show({
+          title: "Cannot Subscribe to Yourself",
+          icon: <IconX size="1.1rem" />,
+          color: "red",
+          message: "You cannot subscribe to yourself.",
+        });
+      }
+      // Check if the user has enough balance
+      else if (userDESOBalance < equivalentNanosInt) {
+        notifications.show({
+          title: "Insufficient Funds",
+          icon: <IconX size="1.1rem" />,
+          color: "red",
+          message: "Hey there, please add DeSo to your Wallet!",
+        });
+      } else {
+        // Proceed with the API call
+        await sendDeso({
+          SenderPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
+          RecipientPublicKeyOrUsername: profile.PublicKeyBase58Check,
+          AmountNanos: equivalentNanosInt,
+          MinFeeRateNanosPerKB: 1000,
+        });
+      }
     } catch (error) {
       console.error("Error subscribing to User:", error);
     }
@@ -413,7 +464,12 @@ const equivalentNanosInt = Number(equivalentNanosAmount);
         },
       });
 
-      alert("Comment submitted successfully!");
+      notifications.show({
+        title: "Success",
+        icon: <IconCheck size="1.1rem" />,
+        color: "green",
+        message: "Your comment was submitted!",
+      });
     } catch (error) {
       alert("Error submitting comment. Please try again.");
       console.error("Error submitting comment:", error);
@@ -554,21 +610,17 @@ const equivalentNanosInt = Number(equivalentNanosAmount);
               playbackId={profile.ExtraData?.WavesStreamPlaybackId}
               title={profile.ExtraData?.WavesStreamTitle}
               autoPlay
-              
             />
           ) : (
             <Divider
               my="xs"
               label={
                 <>
-                  <Badge
-                    size="md"
-                    radius="sm"
-                    variant="gradient"
-                    gradient={{ from: "indigo", to: "cyan", deg: 45 }}
-                  >
-                    Not live right now
-                  </Badge>
+                  <Paper radius="xl" p="md" withBorder>
+                    <Text c="dimmed" fw={500} fs="md">
+                      Not live right now.
+                    </Text>
+                  </Paper>
                 </>
               }
               labelPosition="center"
@@ -577,127 +629,168 @@ const equivalentNanosInt = Number(equivalentNanosAmount);
         </Card.Section>
         <Space h="md" />
         <Group position="right">
-
-      
-
-      
-        <Button rightIcon={<GiWaveCrest size="1rem" />} onClick={openSub}>Subscribe</Button>
-        <Modal size="auto" opened={openedSub} onClose={closeSub} centered transitionProps={{ transition: 'fade' }}>
-        <Paper shadow="xl" p="xl" withBorder>
-          
-          <Text fw={700} c="dimmed" align='center'> Join {userName}'s Wave and Subscribe to contribute to their growth.</Text>
-          <Space h='md'/>
-          <Center><IconHeartHandshake size='2.3rem'/></Center>
-          <Space h='md'/>
-    <Grid>
-    <Grid.Col span={4}><Paper  shadow="xl" p="xl" withBorder>
-    <List  >
-    
-
-    <Text fw={700} align="center">Tier 1</Text>
-    <Divider my="sm" />
-    <Space h="md" />
-      <List.Item><Text size='xs'>1-Month Subcription</Text></List.Item>
-      <List.Item><Text size='xs'>1-Wave Point</Text></List.Item>
-      <List.Item><Text size='xs'>1-Month Subscriber NFT</Text></List.Item>
-    </List>
-    <Space h="md" />
-    <Center>
-        <Button onClick={subTier1} variant="light" radius="md" fullWidth>
-      $5.00
-    </Button>
-    </Center>
-    </Paper></Grid.Col>
-    <Grid.Col span={4}><Paper shadow="xl" p="xl" withBorder>
-    <List >
-    
-
-    <Text fw={700} align="center">Tier 2</Text>
-    <Divider my="sm" />
-    <Space h="md" />
-      <List.Item><Text size='xs'>3-Month Subcription</Text></List.Item>
-      <List.Item><Text size='xs'>3-Wave Points</Text></List.Item>
-      <List.Item><Text size='xs'>3-Month Subscriber NFT</Text></List.Item>
-    </List>
-    <Space h="md" />
-    <Center>
-        <Button onClick={subTier2} variant="light" radius="md" fullWidth>
-      $15.00
-    </Button>
-    </Center>
-    </Paper></Grid.Col>
-    <Grid.Col span={4}><Paper  shadow="xl" p="xl" withBorder>
-    <List >
-    
-    <Text fw={700} align="center">Tier 3</Text>
-    <Divider my="sm" />
-    <Space h="md" />
-      <List.Item><Text size='xs'>6-Month Subcription</Text></List.Item>
-      <List.Item><Text size='xs'>6-Wave Points</Text></List.Item>
-      <List.Item><Text size='xs'>6-Month Subscriber NFT</Text></List.Item>
-    </List>
-    <Space h="md" />
-    <Center>
-        <Button onClick={subTier3} variant="light" radius="md" fullWidth>
-      $25.00
-    </Button>
-    </Center>
-    </Paper></Grid.Col>
-    </Grid>
-    
-   
-    
-    </Paper>
-      </Modal>
-        <CopyButton
-                      value={`https://waves-2.vercel.app/wave/${userName}`}
-                      timeout={2000}
-                    >
-                      {({ copied, copy }) => (
+          <Button rightIcon={<GiWaveCrest size="1rem" />} onClick={openSub}>
+            Subscribe
+          </Button>
+          <Modal
+            size="auto"
+            opened={openedSub}
+            onClose={closeSub}
+            centered
+            transitionProps={{ transition: "fade" }}
+          >
+            <Paper shadow="xl" p="xl" withBorder>
+              <Text fw={700} c="dimmed" align="center">
+                {" "}
+                Join {userName}'s Wave and Subscribe to contribute to their
+                growth.
+              </Text>
+              <Space h="md" />
+              <Center>
+                <IconHeartHandshake size="2.3rem" />
+              </Center>
+              <Space h="md" />
+              <Center>
+                <Grid>
+                  <Grid.Col lg={4} sm={7}>
+                    <Paper shadow="xl" p="xl" withBorder>
+                      <List>
+                        <Text fw={700} align="center">
+                          Tier 1
+                        </Text>
+                        <Divider my="sm" />
+                        <Space h="md" />
+                        <List.Item>
+                          <Text size="xs">1-Month Subcription</Text>
+                        </List.Item>
+                        <List.Item>
+                          <Text size="xs">1-Wave Point</Text>
+                        </List.Item>
+                        <List.Item>
+                          <Text size="xs">1-Month Subscriber NFT</Text>
+                        </List.Item>
+                      </List>
+                      <Space h="md" />
+                      <Center>
                         <Button
-                        size="xs" 
-                          color={copied ? "teal" : "blue"}
-                          onClick={copy}
+                          onClick={subTier1}
+                          variant="light"
+                          radius="md"
+                          fullWidth
                         >
-                          {copied ? (
-                            <>
-                            <Tooltip label="Copied Wave">
-                                
-                                
-                                <IconCheck size={16} />
-                                </Tooltip>
-                            </>
-                          ) : (
-                            <>
-                      <Tooltip label="Share their Wave with this Link">
-                              
-                               
-                                <IconScreenShare size={16} />
-                                </Tooltip>
-                            </>
-                          )}
+                          $5.00
                         </Button>
-                      )}
-                    </CopyButton>
-
+                      </Center>
+                    </Paper>
+                  </Grid.Col>
+                  <Grid.Col lg={4} sm={7}>
+                    <Paper shadow="xl" p="xl" withBorder>
+                      <List>
+                        <Text fw={700} align="center">
+                          Tier 2
+                        </Text>
+                        <Divider my="sm" />
+                        <Space h="md" />
+                        <List.Item>
+                          <Text size="xs">3-Month Subcription</Text>
+                        </List.Item>
+                        <List.Item>
+                          <Text size="xs">3-Wave Points</Text>
+                        </List.Item>
+                        <List.Item>
+                          <Text size="xs">3-Month Subscriber NFT</Text>
+                        </List.Item>
+                      </List>
+                      <Space h="md" />
+                      <Center>
+                        <Button
+                          onClick={subTier2}
+                          variant="light"
+                          radius="md"
+                          fullWidth
+                        >
+                          $15.00
+                        </Button>
+                      </Center>
+                    </Paper>
+                  </Grid.Col>
+                  <Grid.Col lg={4} sm={7}>
+                    <Paper shadow="xl" p="xl" withBorder>
+                      <List>
+                        <Text fw={700} align="center">
+                          Tier 3
+                        </Text>
+                        <Divider my="sm" />
+                        <Space h="md" />
+                        <List.Item>
+                          <Text size="xs">6-Month Subcription</Text>
+                        </List.Item>
+                        <List.Item>
+                          <Text size="xs">6-Wave Points</Text>
+                        </List.Item>
+                        <List.Item>
+                          <Text size="xs">6-Month Subscriber NFT</Text>
+                        </List.Item>
+                      </List>
+                      <Space h="md" />
+                      <Center>
+                        <Button
+                          onClick={subTier3}
+                          variant="light"
+                          radius="md"
+                          fullWidth
+                        >
+                          $25.00
+                        </Button>
+                      </Center>
+                    </Paper>
+                  </Grid.Col>
+                </Grid>
+              </Center>
+            </Paper>
+          </Modal>
         </Group>
         <Space h="md" />
+
         <Paper shadow="xl" radius="md" p="xl">
+          <CopyButton
+            value={`https://waves-2.vercel.app/wave/${userName}`}
+            timeout={2000}
+          >
+            {({ copied, copy }) => (
+              <Button size="xs" color={copied ? "teal" : "blue"} onClick={copy}>
+                {copied ? (
+                  <>
+                    <Tooltip label="Copied Wave">
+                      <IconCheck size={16} />
+                    </Tooltip>
+                  </>
+                ) : (
+                  <>
+                    <Tooltip label="Share their Wave with this Link">
+                      <IconScreenShare size={16} />
+                    </Tooltip>
+                  </>
+                )}
+              </Button>
+            )}
+          </CopyButton>
+          <Space h="sm" />
           <Text
-    fz="sm"
-    style={{
-      maxWidth: "100%",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "wrap",
-    }}
-    dangerouslySetInnerHTML={{
-      __html:
-        profile && profile.Description
-          ? replaceURLs(profile.Description.replace(/\n/g, "<br> "))
-          : "",
-    }}
-  />
+            fz="sm"
+            style={{
+              maxWidth: "100%",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "wrap",
+            }}
+            dangerouslySetInnerHTML={{
+              __html:
+                profile && profile.Description
+                  ? replaceURLs(profile.Description.replace(/\n/g, "<br> "))
+                  : "",
+            }}
+          />
         </Paper>
 
         <Space h="sm" />
@@ -802,18 +895,18 @@ const equivalentNanosInt = Number(equivalentNanosAmount);
               >
                 <Group position="right">
                   <Tooltip label="Go to Post">
-                <ActionIcon  color="blue" size="sm" variant="light"
-          onClick={() => {
-            navigate(
-              `/post/${post.PostHashHex}`
-            );
-          }}
-         
-        >
-<IconMessageShare />
-</ActionIcon>
-</Tooltip>
-</Group>
+                    <ActionIcon
+                      color="blue"
+                      size="sm"
+                      variant="light"
+                      onClick={() => {
+                        navigate(`/post/${post.PostHashHex}`);
+                      }}
+                    >
+                      <IconMessageShare />
+                    </ActionIcon>
+                  </Tooltip>
+                </Group>
                 <Center>
                   {post.ProfileEntryResponse &&
                   post.ProfileEntryResponse.ExtraData?.LargeProfilePicURL ? (
@@ -876,15 +969,26 @@ const equivalentNanosInt = Number(equivalentNanosAmount);
 
                 <Space h="md" />
                 {post.PostExtraData?.EmbedVideoURL && (
-          
-          <Group style={{ height: "750px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-  
-  <iframe style={{ height: "100%", border: "none", borderRadius: "8px" }} title="embed" src={post.PostExtraData.EmbedVideoURL} />
-</Group>
-
-
-        )}
-           {post.VideoURLs && (
+                  <Group
+                    style={{
+                      height: "750px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <iframe
+                      style={{
+                        height: "100%",
+                        border: "none",
+                        borderRadius: "8px",
+                      }}
+                      title="embed"
+                      src={post.PostExtraData.EmbedVideoURL}
+                    />
+                  </Group>
+                )}
+                {post.VideoURLs && (
                   <iframe
                     style={{ width: "100%", height: "100%" }}
                     src={post.VideoURLs}
@@ -921,19 +1025,21 @@ const equivalentNanosInt = Number(equivalentNanosAmount);
                     className={classes.comment}
                   >
                     <Group position="right">
-                  <Tooltip label="Go to Post">
-                <ActionIcon  color="blue" size="sm" variant="light"
-          onClick={() => {
-            navigate(
-              `/post/${post.RepostedPostEntryResponse.PostHashHex}`
-            );
-          }}
-         
-        >
-<IconMessageShare />
-</ActionIcon>
-</Tooltip>
-</Group>
+                      <Tooltip label="Go to Post">
+                        <ActionIcon
+                          color="blue"
+                          size="sm"
+                          variant="light"
+                          onClick={() => {
+                            navigate(
+                              `/post/${post.RepostedPostEntryResponse.PostHashHex}`
+                            );
+                          }}
+                        >
+                          <IconMessageShare />
+                        </ActionIcon>
+                      </Tooltip>
+                    </Group>
                     <Center>
                       <ActionIcon
                         onClick={() => {
@@ -1001,15 +1107,30 @@ const equivalentNanosInt = Number(equivalentNanosAmount);
                       </TypographyStylesProvider>
                     </Spoiler>
                     <Space h="md" />
-                    {post.RepostedPostEntryResponse.PostExtraData?.EmbedVideoURL && (
-          
-          <Group style={{ height: "750px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-  
-  <iframe style={{ height: "100%", border: "none", borderRadius: "8px" }} title="embed" src={post.RepostedPostEntryResponse.PostExtraData.EmbedVideoURL} />
-</Group>
-
-
-        )}
+                    {post.RepostedPostEntryResponse.PostExtraData
+                      ?.EmbedVideoURL && (
+                      <Group
+                        style={{
+                          height: "750px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <iframe
+                          style={{
+                            height: "100%",
+                            border: "none",
+                            borderRadius: "8px",
+                          }}
+                          title="embed"
+                          src={
+                            post.RepostedPostEntryResponse.PostExtraData
+                              .EmbedVideoURL
+                          }
+                        />
+                      </Group>
+                    )}
                     {post.RepostedPostEntryResponse.VideoURLs && (
                       <iframe
                         style={{ width: "100%", height: "100%" }}
@@ -1040,8 +1161,6 @@ const equivalentNanosInt = Number(equivalentNanosAmount);
                       )}
                   </Paper>
                 )}
-
-            
 
                 <Space h="md" />
 

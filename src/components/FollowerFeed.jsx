@@ -37,12 +37,12 @@ import {
   IconDiamond,
   IconRecycle,
   IconMessageCircle,
-  IconMessageShare
+  IconMessageShare, IconCheck
 } from "@tabler/icons-react";
 import { useNavigate } from "react-router";
 import { Player } from "@livepeer/react";
 import { useDisclosure } from "@mantine/hooks";
-
+import { notifications } from "@mantine/notifications";
 const useStyles = createStyles((theme) => ({
   comment: {
     padding: `${theme.spacing.lg}px ${theme.spacing.xl}px`,
@@ -172,7 +172,12 @@ export const FollowerFeed = () => {
         },
       });
 
-      alert("Comment submitted successfully!");
+      notifications.show({
+        title: "Success",
+        icon: <IconCheck size="1.1rem" />,
+        color: "green",
+        message: "Your comment was submitted!",
+      });
     } catch (error) {
       alert("Error submitting comment. Please try again.");
       console.error("Error submitting comment:", error);
