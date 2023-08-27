@@ -599,136 +599,190 @@ export const Wave = () => {
           )}
         </Card.Section>
         <Space h="md" />
-        <Group position="right">
-          <Button rightIcon={<GiWaveCrest size="1rem" />} onClick={openSub}>
-            Subscribe
-          </Button>
-          <Modal
-            size="auto"
-            opened={openedSub}
-            onClose={closeSub}
-            centered
-            transitionProps={{ transition: "fade" }}
-          >
-            <Paper shadow="xl" p="xl" withBorder>
-              <Text fw={700} c="dimmed" align="center">
-                {" "}
-                Join {userName}'s Wave and Subscribe to contribute to their
-                growth.
-              </Text>
-              <Space h="md" />
-              <Center>
-                <IconHeartHandshake size="2.3rem" />
-              </Center>
-              <Space h="md" />
-              <Center>
-                <Box>
-                  <Grid>
-                    <Grid.Col lg={4} sm={7}>
-                      <Paper shadow="xl" p="xl" withBorder>
-                        <List>
-                          <Text fw={700} align="center">
-                            Tier 1
-                          </Text>
-                          <Divider my="sm" />
+
+        <Space h="md" />
+
+        <Paper shadow="xl" radius="md" p="xl">
+          <Group>
+            <CopyButton
+              value={`https://waves-2.vercel.app/wave/${userName}`}
+              timeout={2000}
+            >
+              {({ copied, copy }) => (
+                <Button
+                  size="sm"
+                  color={copied ? "teal" : "blue"}
+                  onClick={copy}
+                >
+                  {copied ? (
+                    <>
+                      <Tooltip label="Copied Wave">
+                        <IconCheck size={16} />
+                      </Tooltip>
+                    </>
+                  ) : (
+                    <>
+                      <Tooltip label="Share their Wave with this Link">
+                        <IconScreenShare size={16} />
+                      </Tooltip>
+                    </>
+                  )}
+                </Button>
+              )}
+            </CopyButton>
+
+            <Button rightIcon={<GiWaveCrest size="1rem" />} onClick={openSub}>
+              Subscribe
+            </Button>
+            <Modal
+              size="auto"
+              opened={openedSub}
+              onClose={closeSub}
+              centered
+              transitionProps={{ transition: "fade" }}
+            >
+              <Paper shadow="xl" p="xl" withBorder>
+                <Text fw={700} c="dimmed" align="center">
+                  {" "}
+                  Join {userName}'s Wave and Subscribe to contribute to their
+                  growth.
+                </Text>
+                <Space h="md" />
+                <Center>
+                  <IconHeartHandshake size="2.3rem" />
+                </Center>
+                <Space h="md" />
+                <Center>
+                  <Box>
+                    <Grid>
+                      <Grid.Col lg={4} sm={7}>
+                        <Paper shadow="xl" p="xl" withBorder>
+                          <List>
+                            <Text fw={700} align="center">
+                              Tier 1
+                            </Text>
+                            <Divider my="sm" />
+                            <Space h="md" />
+                            <List.Item>
+                              <Text size="xs">1-Month Subcription</Text>
+                            </List.Item>
+                            <List.Item>
+                              <Text size="xs">1-Wave Point</Text>
+                            </List.Item>
+                            <List.Item>
+                              <Text size="xs">1-Month Subscriber NFT</Text>
+                            </List.Item>
+                          </List>
                           <Space h="md" />
-                          <List.Item>
-                            <Text size="xs">1-Month Subcription</Text>
-                          </List.Item>
-                          <List.Item>
-                            <Text size="xs">1-Wave Point</Text>
-                          </List.Item>
-                          <List.Item>
-                            <Text size="xs">1-Month Subscriber NFT</Text>
-                          </List.Item>
-                        </List>
-                        <Space h="md" />
-                        <Center>
-                          <Button
-                            onClick={subTier1}
-                            variant="light"
-                            radius="md"
-                            fullWidth
-                          >
-                            $5.00
-                          </Button>
-                        </Center>
-                      </Paper>
-                    </Grid.Col>
-                    <Grid.Col lg={4} sm={7}>
-                      <Paper shadow="xl" p="xl" withBorder>
-                        <List>
-                          <Text fw={700} align="center">
-                            Tier 2
-                          </Text>
-                          <Divider my="sm" />
+                          <Center>
+                            <Button
+                              onClick={subTier1}
+                              variant="light"
+                              radius="md"
+                              fullWidth
+                            >
+                              $5.00
+                            </Button>
+                          </Center>
+                        </Paper>
+                      </Grid.Col>
+                      <Grid.Col lg={4} sm={7}>
+                        <Paper shadow="xl" p="xl" withBorder>
+                          <List>
+                            <Text fw={700} align="center">
+                              Tier 2
+                            </Text>
+                            <Divider my="sm" />
+                            <Space h="md" />
+                            <List.Item>
+                              <Text size="xs">3-Month Subcription</Text>
+                            </List.Item>
+                            <List.Item>
+                              <Text size="xs">3-Wave Points</Text>
+                            </List.Item>
+                            <List.Item>
+                              <Text size="xs">3-Month Subscriber NFT</Text>
+                            </List.Item>
+                          </List>
                           <Space h="md" />
-                          <List.Item>
-                            <Text size="xs">3-Month Subcription</Text>
-                          </List.Item>
-                          <List.Item>
-                            <Text size="xs">3-Wave Points</Text>
-                          </List.Item>
-                          <List.Item>
-                            <Text size="xs">3-Month Subscriber NFT</Text>
-                          </List.Item>
-                        </List>
-                        <Space h="md" />
-                        <Center>
-                          <Button
-                            onClick={subTier2}
-                            variant="light"
-                            radius="md"
-                            fullWidth
-                          >
-                            $15.00
-                          </Button>
-                        </Center>
-                      </Paper>
-                    </Grid.Col>
-                    <Grid.Col lg={4} sm={7}>
-                      <Paper shadow="xl" p="xl" withBorder>
-                        <List>
-                          <Text fw={700} align="center">
-                            Tier 3
-                          </Text>
-                          <Divider my="sm" />
+                          <Center>
+                            <Button
+                              onClick={subTier2}
+                              variant="light"
+                              radius="md"
+                              fullWidth
+                            >
+                              $15.00
+                            </Button>
+                          </Center>
+                        </Paper>
+                      </Grid.Col>
+                      <Grid.Col lg={4} sm={7}>
+                        <Paper shadow="xl" p="xl" withBorder>
+                          <List>
+                            <Text fw={700} align="center">
+                              Tier 3
+                            </Text>
+                            <Divider my="sm" />
+                            <Space h="md" />
+                            <List.Item>
+                              <Text size="xs">6-Month Subcription</Text>
+                            </List.Item>
+                            <List.Item>
+                              <Text size="xs">6-Wave Points</Text>
+                            </List.Item>
+                            <List.Item>
+                              <Text size="xs">6-Month Subscriber NFT</Text>
+                            </List.Item>
+                          </List>
                           <Space h="md" />
-                          <List.Item>
-                            <Text size="xs">6-Month Subcription</Text>
-                          </List.Item>
-                          <List.Item>
-                            <Text size="xs">6-Wave Points</Text>
-                          </List.Item>
-                          <List.Item>
-                            <Text size="xs">6-Month Subscriber NFT</Text>
-                          </List.Item>
-                        </List>
-                        <Space h="md" />
-                        <Center>
-                          <Button
-                            onClick={subTier3}
-                            variant="light"
-                            radius="md"
-                            fullWidth
-                          >
-                            $25.00
-                          </Button>
-                        </Center>
-                      </Paper>
-                    </Grid.Col>
-                  </Grid>
-                  {currentUser &&
-                    profile &&
-                    currentUser.PublicKeyBase58Check ===
-                      profile.PublicKeyBase58Check && (
+                          <Center>
+                            <Button
+                              onClick={subTier3}
+                              variant="light"
+                              radius="md"
+                              fullWidth
+                            >
+                              $25.00
+                            </Button>
+                          </Center>
+                        </Paper>
+                      </Grid.Col>
+                    </Grid>
+                    {currentUser &&
+                      profile &&
+                      currentUser.PublicKeyBase58Check ===
+                        profile.PublicKeyBase58Check && (
+                        <Overlay center>
+                          <Container size="md" px={0}>
+                            <Space h={77} />
+                            <Paper shadow="xl" p="lg" withBorder>
+                              <Text fw={500}>
+                                Can't Subscribe to yourself. Switch Accounts to
+                                Subscribe!
+                              </Text>
+                              <Divider my="sm" />
+                              <Button
+                                leftIcon={<GiWaveCrest size="1rem" />}
+                                variant="gradient"
+                                gradient={{ from: "cyan", to: "indigo" }}
+                                onClick={() => identity.login()}
+                                fullWidth
+                              >
+                                Switch Account
+                              </Button>
+                            </Paper>
+                          </Container>
+                        </Overlay>
+                      )}
+
+                    {!currentUser && (
                       <Overlay center>
                         <Container size="md" px={0}>
                           <Space h={77} />
                           <Paper shadow="xl" p="lg" withBorder>
                             <Text fw={500}>
-                              Can't Subscribe to yourself. Switch Accounts to
-                              Subscribe!
+                              Please Signup or Login to Subscribe.
                             </Text>
                             <Divider my="sm" />
                             <Button
@@ -738,73 +792,25 @@ export const Wave = () => {
                               onClick={() => identity.login()}
                               fullWidth
                             >
-                              Switch Account
+                              Sign Up
+                            </Button>
+                            <Space h="sm" />
+                            <Button
+                              fullWidth
+                              variant="default"
+                              onClick={() => identity.login()}
+                            >
+                              Login
                             </Button>
                           </Paper>
                         </Container>
                       </Overlay>
                     )}
-
-                  {!currentUser && (
-                    <Overlay center>
-                      <Container size="md" px={0}>
-                        <Space h={77} />
-                        <Paper shadow="xl" p="lg" withBorder>
-                          <Text fw={500}>
-                            Please Signup or Login to Subscribe.
-                          </Text>
-                          <Divider my="sm" />
-                          <Button
-                            leftIcon={<GiWaveCrest size="1rem" />}
-                            variant="gradient"
-                            gradient={{ from: "cyan", to: "indigo" }}
-                            onClick={() => identity.login()}
-                            fullWidth
-                          >
-                            Sign Up
-                          </Button>
-                          <Space h="sm" />
-                          <Button
-                            fullWidth
-                            variant="default"
-                            onClick={() => identity.login()}
-                          >
-                            Login
-                          </Button>
-                        </Paper>
-                      </Container>
-                    </Overlay>
-                  )}
-                </Box>
-              </Center>
-            </Paper>
-          </Modal>
-        </Group>
-        <Space h="md" />
-
-        <Paper shadow="xl" radius="md" p="xl">
-          <CopyButton
-            value={`https://waves-2.vercel.app/wave/${userName}`}
-            timeout={2000}
-          >
-            {({ copied, copy }) => (
-              <Button size="xs" color={copied ? "teal" : "blue"} onClick={copy}>
-                {copied ? (
-                  <>
-                    <Tooltip label="Copied Wave">
-                      <IconCheck size={16} />
-                    </Tooltip>
-                  </>
-                ) : (
-                  <>
-                    <Tooltip label="Share their Wave with this Link">
-                      <IconScreenShare size={16} />
-                    </Tooltip>
-                  </>
-                )}
-              </Button>
-            )}
-          </CopyButton>
+                  </Box>
+                </Center>
+              </Paper>
+            </Modal>
+          </Group>
           <Space h="sm" />
           <Text
             fz="sm"

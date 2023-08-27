@@ -214,40 +214,6 @@ export const Stream = () => {
         <Space h="md" />
         <Tabs.Panel value="first">
           {" "}
-          <Group>
-            <CopyButton
-              value={`https://waves-2.vercel.app/wave/${currentUser.ProfileEntryResponse.Username}`}
-              timeout={2000}
-            >
-              {({ copied, copy }) => (
-                <Button
-                  size="xs"
-                  color={copied ? "teal" : "blue"}
-                  onClick={copy}
-                >
-                  {copied ? (
-                    <>
-                      <Tooltip label="Copied Wave">
-                        <IconCheck size={16} />
-                      </Tooltip>
-                    </>
-                  ) : (
-                    <>
-                      <Tooltip label="Share your Wave">
-                        <IconScreenShare size={16} />
-                      </Tooltip>
-                    </>
-                  )}
-                </Button>
-              )}
-            </CopyButton>
-
-            <Tooltip label="Clear Idle Wave from your profile">
-              <Button size="xs" color="red" onClick={clearWave}>
-                Clear Wave
-              </Button>
-            </Tooltip>
-          </Group>
           <Space h="md" />
           <Center>
             <Text fz="lg" fw={777} c="dimmed" truncate>
@@ -427,9 +393,6 @@ export const Stream = () => {
               </Button>
             </Group>
           )}
-        </Tabs.Panel>
-        <Tabs.Panel value="second">
-          {" "}
           <Group>
             <CopyButton
               value={`https://waves-2.vercel.app/wave/${currentUser.ProfileEntryResponse.Username}`}
@@ -464,6 +427,9 @@ export const Stream = () => {
               </Button>
             </Tooltip>
           </Group>
+        </Tabs.Panel>
+        <Tabs.Panel value="second">
+          {" "}
           <Space h="md" />
           <Center>
             <Text fz="lg" fw={777} c="dimmed" truncate>
@@ -582,6 +548,40 @@ export const Stream = () => {
               </Button>
             </Group>
           )}
+          <Group>
+            <CopyButton
+              value={`https://waves-2.vercel.app/wave/${currentUser.ProfileEntryResponse.Username}`}
+              timeout={2000}
+            >
+              {({ copied, copy }) => (
+                <Button
+                  size="xs"
+                  color={copied ? "teal" : "blue"}
+                  onClick={copy}
+                >
+                  {copied ? (
+                    <>
+                      <Tooltip label="Copied Wave">
+                        <IconCheck size={16} />
+                      </Tooltip>
+                    </>
+                  ) : (
+                    <>
+                      <Tooltip label="Share your Wave">
+                        <IconScreenShare size={16} />
+                      </Tooltip>
+                    </>
+                  )}
+                </Button>
+              )}
+            </CopyButton>
+
+            <Tooltip label="Clear Idle Wave from your profile">
+              <Button size="xs" color="red" onClick={clearWave}>
+                Clear Wave
+              </Button>
+            </Tooltip>
+          </Group>
         </Tabs.Panel>
       </Tabs>
     </Paper>
