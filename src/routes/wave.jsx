@@ -312,8 +312,28 @@ export const Wave = () => {
       // Convert to an integer
       const equivalentNanosInt = Number(equivalentNanosAmount);
 
+      // Check if currentUser exists
+      if (!currentUser) {
+        notifications.show({
+          title: "Login Required",
+          icon: <IconX size="1.1rem" />,
+          color: "red",
+          message: "Please log in to subscribe.",
+        });
+      }
+      // Check if currentUser's public key matches profile's public key
+      else if (
+        currentUser.PublicKeyBase58Check === profile.PublicKeyBase58Check
+      ) {
+        notifications.show({
+          title: "Cannot Subscribe to Yourself",
+          icon: <IconX size="1.1rem" />,
+          color: "red",
+          message: "You cannot subscribe to yourself.",
+        });
+      }
       // Check if the user has enough balance
-      if (userDESOBalance < equivalentNanosInt) {
+      else if (userDESOBalance < equivalentNanosInt) {
         notifications.show({
           title: "Insufficient Funds",
           icon: <IconX size="1.1rem" />,
