@@ -199,7 +199,12 @@ export const Stream = () => {
 
   return (
     <Paper shadow="sm" p="lg" withBorder>
-      <Tabs value={activeTab} onTabChange={setActiveTab}>
+      <Tabs
+        variant="pills"
+        radius="md"
+        value={activeTab}
+        onTabChange={setActiveTab}
+      >
         <Tabs.List position="center">
           <Tabs.Tab value="first">Stream via OBS/StreamLabs</Tabs.Tab>
           <Tabs.Tab value="second">
