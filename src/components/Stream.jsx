@@ -180,7 +180,7 @@ export const Stream = () => {
       submitPost({
         UpdaterPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
         BodyObj: {
-          Body: stream?.name,
+          Body: `${stream?.name}\nTo Subscribe and ensure the best viewing experience, visit: \nhttps://waves-2.vercel.app/wave/${currentUser.ProfileEntryResponse.Username}`,
           VideoURLs: [`https://lvpr.tv/?v=${stream?.playbackId}`],
           ImageURLs: [],
         },
