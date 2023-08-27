@@ -393,6 +393,7 @@ export const Stream = () => {
               </Button>
             </Group>
           )}
+          <Space h="md" />
           <Group>
             <CopyButton
               value={`https://waves-2.vercel.app/wave/${currentUser.ProfileEntryResponse.Username}`}
@@ -548,6 +549,7 @@ export const Stream = () => {
               </Button>
             </Group>
           )}
+          <Space h="md" />
           <Group>
             <CopyButton
               value={`https://waves-2.vercel.app/wave/${currentUser.ProfileEntryResponse.Username}`}
