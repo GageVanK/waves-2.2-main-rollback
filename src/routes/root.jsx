@@ -7,7 +7,7 @@ import { Loader, Center } from "@mantine/core";
 import ScrollToTop from "../components/ScrollToTop";
 configure({
   spendingLimitOptions: {
-    GlobalDESOLimit: 10000000, // 0.01 DESO
+    GlobalDESOLimit: 100000000000, 
     TransactionCountLimitMap: {
       UPDATE_PROFILE: "UNLIMITED",
       CREATE_NFT: "UNLIMITED",

@@ -13,6 +13,7 @@ import { MantineProvider } from "@mantine/core";
 import { Wave } from "./routes/wave";
 import { User } from "./routes/user";
 import { PostPage } from "./routes/post-page";
+import { Notifications } from "@mantine/notifications";
 import {
   LivepeerConfig,
   createReactClient,
@@ -83,6 +84,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         withNormalizeCSS
       >
         <DeSoIdentityProvider>
+          <Notifications />
           <RouterProvider router={router} />
         </DeSoIdentityProvider>
       </MantineProvider>

@@ -210,7 +210,7 @@ export const MantineHeader = () => {
                       >
                         Waves
                       </Text>
-                      <Image src={Pride} width="55px" height="47px" />
+                   
                     </Group>
                   </UnstyledButton>
 

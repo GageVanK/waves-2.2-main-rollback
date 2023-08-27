@@ -35,10 +35,13 @@ import {
   IconDiamond,
   IconRecycle,
   IconMessageCircle,
+  IconCheck
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { DeSoIdentityContext } from "react-deso-protocol";
 import { TikTok } from "react-tiktok";
+
+import { notifications } from "@mantine/notifications";
 
 const useStyles = createStyles((theme) => ({
   comment: {
@@ -110,7 +113,12 @@ export const PostPage = () => {
         },
       });
 
-      alert("Comment submitted successfully!");
+      notifications.show({
+        title: "Success",
+        icon: <IconCheck size="1.1rem" />,
+        color: "green",
+        message: "Your comment was submitted!",
+      });
     } catch (error) {
       alert("Error submitting comment. Please try again.");
       console.error("Error submitting comment:", error);
