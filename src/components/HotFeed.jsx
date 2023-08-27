@@ -107,7 +107,12 @@ export const HotFeed = () => {
         },
       });
 
-      alert("Comment submitted successfully!");
+      notifications.show({
+        title: "Success",
+        icon: <IconCheck size="1.1rem" />,
+        color: "green",
+        message: "Your comment was submitted!",
+      });
     } catch (error) {
       alert("Error submitting comment. Please try again.");
       console.error("Error submitting comment:", error);

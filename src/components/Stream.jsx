@@ -1,4 +1,9 @@
-import { Player, useCreateStream, useUpdateStream } from "@livepeer/react";
+import {
+  Player,
+  useCreateStream,
+  useUpdateStream,
+  Broadcast,
+} from "@livepeer/react";
 import { useMemo, useState, useContext, useEffect } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -15,7 +20,7 @@ import {
   Space,
   Center,
   CopyButton,
-  ActionIcon,
+  Tabs,
   Tooltip,
   Card,
   Badge,
@@ -56,6 +61,7 @@ export const Stream = () => {
   const { classes, theme } = useStyles();
   const [progress, setProgress] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [activeTab, setActiveTab] = useState("first");
 
   const interval = useInterval(
     () =>
@@ -193,221 +199,386 @@ export const Stream = () => {
 
   return (
     <Paper shadow="sm" p="lg" withBorder>
-      <>
-        <Group>
-          <CopyButton
-            value={`https://waves-2.vercel.app/wave/${currentUser.ProfileEntryResponse.Username}`}
-            timeout={2000}
-          >
-            {({ copied, copy }) => (
-              <Button size="xs" color={copied ? "teal" : "blue"} onClick={copy}>
-                {copied ? (
-                  <>
-                    <Tooltip label="Copied Wave">
-                      <IconCheck size={16} />
-                    </Tooltip>
-                  </>
-                ) : (
-                  <>
-                    <Tooltip label="Share your Wave">
-                      <IconScreenShare size={16} />
-                    </Tooltip>
-                  </>
-                )}
+      <Tabs value={activeTab} onTabChange={setActiveTab}>
+        <Tabs.List position="center">
+          <Tabs.Tab value="first">Stream via OBS/StreamLabs</Tabs.Tab>
+          <Tabs.Tab value="second">
+            Stream via Webcam (Mobile Friendly)
+          </Tabs.Tab>
+        </Tabs.List>
+        <Space h="md" />
+        <Tabs.Panel value="first">
+          {" "}
+          <Group>
+            <CopyButton
+              value={`https://waves-2.vercel.app/wave/${currentUser.ProfileEntryResponse.Username}`}
+              timeout={2000}
+            >
+              {({ copied, copy }) => (
+                <Button
+                  size="xs"
+                  color={copied ? "teal" : "blue"}
+                  onClick={copy}
+                >
+                  {copied ? (
+                    <>
+                      <Tooltip label="Copied Wave">
+                        <IconCheck size={16} />
+                      </Tooltip>
+                    </>
+                  ) : (
+                    <>
+                      <Tooltip label="Share your Wave">
+                        <IconScreenShare size={16} />
+                      </Tooltip>
+                    </>
+                  )}
+                </Button>
+              )}
+            </CopyButton>
+
+            <Tooltip label="Clear Idle Wave from your profile">
+              <Button size="xs" color="red" onClick={clearWave}>
+                Clear Wave
               </Button>
-            )}
-          </CopyButton>
-
-          <Tooltip label="Clear Idle Wave from your profile">
-            <Button size="xs" color="red" onClick={clearWave}>
-              Clear Wave
-            </Button>
-          </Tooltip>
-        </Group>
-        <Space h="md" />
-        <Center>
-          <Text fz="lg" fw={777} c="dimmed" truncate>
-            Start Streaming
-          </Text>
-        </Center>
-        <Space h="md" />
-        <Textarea
-          placeholder="Enter Stream Title"
-          variant="filled"
-          radius="md"
-          disabled={disable}
-          onChange={(e) => setStreamName(e.target.value)}
-        />
-        <Space h="xl" />
-      </>
-
-      {status === "success" && (
-        <>
-          {streamName ? (
+            </Tooltip>
+          </Group>
+          <Space h="md" />
+          <Center>
+            <Text fz="lg" fw={777} c="dimmed" truncate>
+              Start Streaming
+            </Text>
+          </Center>
+          <Space h="md" />
+          <Textarea
+            placeholder="Enter Stream Title"
+            variant="filled"
+            radius="md"
+            disabled={disable}
+            onChange={(e) => setStreamName(e.target.value)}
+          />
+          <Space h="xl" />
+          {status === "success" && (
             <>
-              <Center>
-                <Card shadow="sm" p="lg" radius="md" withBorder>
-                  <Group position="center">
-                    <CopyButton
-                      value="rtmp://rtmp.livepeer.com/live"
-                      timeout={2000}
-                    >
-                      {({ copied, copy }) => (
+              {streamName ? (
+                <>
+                  <Center>
+                    <Card shadow="sm" p="lg" radius="md" withBorder>
+                      <Group position="center">
+                        <CopyButton
+                          value="rtmp://rtmp.livepeer.com/live"
+                          timeout={2000}
+                        >
+                          {({ copied, copy }) => (
+                            <Button
+                              fullWidth
+                              color={copied ? "teal" : "blue"}
+                              onClick={copy}
+                            >
+                              {copied ? (
+                                <>
+                                  <Center>
+                                    <h4>Stream Server</h4>
+                                    <Space w="xs" />
+                                    <IconCheck size={16} />
+                                  </Center>
+                                </>
+                              ) : (
+                                <>
+                                  <Center>
+                                    <h4>Stream Server</h4>
+                                    <Space w="xs" />
+                                    <IconCopy size={16} />
+                                  </Center>
+                                </>
+                              )}
+                            </Button>
+                          )}
+                        </CopyButton>
+                      </Group>
+                      <Space h="md" />
+                      <Group position="center">
+                        <CopyButton value={stream.streamKey} timeout={2000}>
+                          {({ copied, copy }) => (
+                            <Button
+                              fullWidth
+                              color={copied ? "teal" : "blue"}
+                              onClick={copy}
+                            >
+                              {copied ? (
+                                <>
+                                  <Center>
+                                    <h4>Stream Key</h4>
+                                    <Space w="xs" />
+                                    <IconCheck size={16} />
+                                  </Center>
+                                </>
+                              ) : (
+                                <>
+                                  <Center>
+                                    <h4>Stream Key</h4>
+                                    <Space w="xs" />
+                                    <IconCopy size={16} />
+                                  </Center>
+                                </>
+                              )}
+                            </Button>
+                          )}
+                        </CopyButton>
+
                         <Button
                           fullWidth
-                          color={copied ? "teal" : "blue"}
-                          onClick={copy}
+                          className={classes.button}
+                          onClick={() => {
+                            attachStreamToDesoProfile();
+                            loaded
+                              ? setLoaded(false)
+                              : !interval.active && interval.start();
+                          }}
+                          color={loaded ? "teal" : "blue"}
                         >
-                          {copied ? (
-                            <>
-                              <Center>
-                                <h4>Stream Server</h4>
-                                <Space w="xs" />
-                                <IconCheck size={16} />
-                              </Center>
-                            </>
-                          ) : (
-                            <>
-                              <Center>
-                                <h4>Stream Server</h4>
-                                <Space w="xs" />
-                                <IconCopy size={16} />
-                              </Center>
-                            </>
+                          <div className={classes.label}>
+                            {progress !== 0
+                              ? "Launching"
+                              : loaded
+                              ? "Launched"
+                              : "Launch Wave to Deso"}
+                          </div>
+                          {progress !== 0 && (
+                            <Progress
+                              value={progress}
+                              className={classes.progress}
+                              color={theme.fn.rgba(
+                                theme.colors[theme.primaryColor][2],
+                                0.35
+                              )}
+                              radius="sm"
+                            />
                           )}
                         </Button>
-                      )}
-                    </CopyButton>
-                  </Group>
+                      </Group>
+                      <Space h="md" />
+                      <Group position="center">
+                        <Badge radius="sm" size="xl">
+                          {streamName}
+                        </Badge>
+                      </Group>
+                      <Space h="md" />
+                    </Card>
+                    <Space h="xl" />
+                  </Center>
                   <Space h="md" />
                   <Group position="center">
-                    <CopyButton value={stream.streamKey} timeout={2000}>
-                      {({ copied, copy }) => (
-                        <Button
-                          fullWidth
-                          color={copied ? "teal" : "blue"}
-                          onClick={copy}
-                        >
-                          {copied ? (
-                            <>
-                              <Center>
-                                <h4>Stream Key</h4>
-                                <Space w="xs" />
-                                <IconCheck size={16} />
-                              </Center>
-                            </>
-                          ) : (
-                            <>
-                              <Center>
-                                <h4>Stream Key</h4>
-                                <Space w="xs" />
-                                <IconCopy size={16} />
-                              </Center>
-                            </>
-                          )}
-                        </Button>
-                      )}
-                    </CopyButton>
+                    <Player
+                      title={stream?.name}
+                      playbackId={stream?.playbackId}
+                      autoPlay
+                      muted
+                    />
+                  </Group>
 
+                  <Space h="md" />
+                  <Group position="center">
                     <Button
                       fullWidth
-                      className={classes.button}
-                      onClick={() => {
-                        attachStreamToDesoProfile();
-                        loaded
-                          ? setLoaded(false)
-                          : !interval.active && interval.start();
-                      }}
-                      color={loaded ? "teal" : "blue"}
+                      color="red"
+                      radius="xl"
+                      onClick={handleEndStream}
                     >
-                      <div className={classes.label}>
-                        {progress !== 0
-                          ? "Launching"
-                          : loaded
-                          ? "Launched"
-                          : "Launch Wave to Deso"}
-                      </div>
-                      {progress !== 0 && (
-                        <Progress
-                          value={progress}
-                          className={classes.progress}
-                          color={theme.fn.rgba(
-                            theme.colors[theme.primaryColor][2],
-                            0.35
-                          )}
-                          radius="sm"
-                        />
-                      )}
+                      End Wave
                     </Button>
                   </Group>
-                  <Space h="md" />
-                  <Group position="center">
-                    <Badge radius="sm" size="xl">
-                      {streamName}
-                    </Badge>
-                  </Group>
-                  <Space h="md" />
-                </Card>
-                <Space h="xl" />
-              </Center>
-              <Space h="md" />
-              <Group position="center">
-                <Player
-                  title={stream?.name}
-                  playbackId={stream?.playbackId}
-                  autoPlay
-                  muted
-                />
-              </Group>
-
-              <Space h="md" />
-              <Group position="center">
-                <Button
-                  fullWidth
-                  color="red"
-                  radius="xl"
-                  onClick={handleEndStream}
-                >
-                  End Wave
-                </Button>
-              </Group>
+                </>
+              ) : (
+                <Group position="center">
+                  <p>Wave suspended. Refresh to create a new Wave.</p>
+                </Group>
+              )}
             </>
-          ) : (
+          )}
+          {status === "loading" && (
             <Group position="center">
-              <p>Wave suspended. Refresh to create a new Wave.</p>
+              <Loader size="sm" />
             </Group>
           )}
-        </>
-      )}
+          {status === "error" && (
+            <Group position="center">
+              <p>Error occurred while creating your wave.</p>
+            </Group>
+          )}
+          <Space h="md" />
+          {!stream && (
+            <Group position="center">
+              <Button
+                radius="xl"
+                onClick={() => {
+                  toggle();
 
-      {status === "loading" && (
-        <Group position="center">
-          <Loader size="sm" />
-        </Group>
-      )}
+                  createStream?.(); // Create the stream and store the result
+                }}
+                disabled={isLoading || !createStream}
+              >
+                Create Wave
+              </Button>
+            </Group>
+          )}
+        </Tabs.Panel>
+        <Tabs.Panel value="second">
+          {" "}
+          <Group>
+            <CopyButton
+              value={`https://waves-2.vercel.app/wave/${currentUser.ProfileEntryResponse.Username}`}
+              timeout={2000}
+            >
+              {({ copied, copy }) => (
+                <Button
+                  size="xs"
+                  color={copied ? "teal" : "blue"}
+                  onClick={copy}
+                >
+                  {copied ? (
+                    <>
+                      <Tooltip label="Copied Wave">
+                        <IconCheck size={16} />
+                      </Tooltip>
+                    </>
+                  ) : (
+                    <>
+                      <Tooltip label="Share your Wave">
+                        <IconScreenShare size={16} />
+                      </Tooltip>
+                    </>
+                  )}
+                </Button>
+              )}
+            </CopyButton>
 
-      {status === "error" && (
-        <Group position="center">
-          <p>Error occurred while creating your wave.</p>
-        </Group>
-      )}
+            <Tooltip label="Clear Idle Wave from your profile">
+              <Button size="xs" color="red" onClick={clearWave}>
+                Clear Wave
+              </Button>
+            </Tooltip>
+          </Group>
+          <Space h="md" />
+          <Center>
+            <Text fz="lg" fw={777} c="dimmed" truncate>
+              Start Streaming
+            </Text>
+          </Center>
+          <Space h="md" />
+          <Textarea
+            placeholder="Enter Stream Title"
+            variant="filled"
+            radius="md"
+            disabled={disable}
+            onChange={(e) => setStreamName(e.target.value)}
+          />
+          <Space h="xl" />
+          {status === "success" && (
+            <>
+              {streamName ? (
+                <>
+                  <Center>
+                    <Card shadow="sm" p="lg" radius="md" withBorder>
+                      <Group position="center">
+                        <Button
+                          fullWidth
+                          className={classes.button}
+                          onClick={() => {
+                            attachStreamToDesoProfile();
+                            loaded
+                              ? setLoaded(false)
+                              : !interval.active && interval.start();
+                          }}
+                          color={loaded ? "teal" : "blue"}
+                        >
+                          <div className={classes.label}>
+                            {progress !== 0
+                              ? "Launching"
+                              : loaded
+                              ? "Launched"
+                              : "Launch Wave to Deso"}
+                          </div>
+                          {progress !== 0 && (
+                            <Progress
+                              value={progress}
+                              className={classes.progress}
+                              color={theme.fn.rgba(
+                                theme.colors[theme.primaryColor][2],
+                                0.35
+                              )}
+                              radius="sm"
+                            />
+                          )}
+                        </Button>
+                      </Group>
+                      <Space h="md" />
+                      <Group position="center">
+                        <Badge radius="sm" size="xl">
+                          {streamName}
+                        </Badge>
+                      </Group>
+                      <Space h="md" />
+                    </Card>
+                    <Space h="xl" />
+                  </Center>
+                  <Space h="md" />
+                  <Group position="center">
+                    <Broadcast
+                      title={stream?.name}
+                      streamKey={stream.streamKey}
+                      autoPlay
+                      muted
+                    />
+                  </Group>
 
-      <Space h="md" />
-      {!stream && (
-        <Group position="center">
-          <Button
-            radius="xl"
-            onClick={() => {
-              toggle();
+                  <Space h="md" />
+                  <Group position="center">
+                    <Button
+                      fullWidth
+                      color="red"
+                      radius="xl"
+                      onClick={handleEndStream}
+                    >
+                      End Wave
+                    </Button>
+                  </Group>
+                </>
+              ) : (
+                <Group position="center">
+                  <p>Wave suspended. Refresh to create a new Wave.</p>
+                </Group>
+              )}
+            </>
+          )}
+          {status === "loading" && (
+            <Group position="center">
+              <Loader size="sm" />
+            </Group>
+          )}
+          {status === "error" && (
+            <Group position="center">
+              <p>Error occurred while creating your wave.</p>
+            </Group>
+          )}
+          <Space h="md" />
+          {!stream && (
+            <Group position="center">
+              <Button
+                radius="xl"
+                onClick={() => {
+                  toggle();
 
-              createStream?.(); // Create the stream and store the result
-            }}
-            disabled={isLoading || !createStream}
-          >
-            Create Wave
-          </Button>
-        </Group>
-      )}
+                  createStream?.(); // Create the stream and store the result
+                }}
+                disabled={isLoading || !createStream}
+              >
+                Create Wave
+              </Button>
+            </Group>
+          )}
+        </Tabs.Panel>
+      </Tabs>
     </Paper>
   );
 };
