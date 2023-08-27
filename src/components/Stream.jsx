@@ -81,7 +81,7 @@ export const Stream = () => {
   const isLoading = useMemo(() => status === "loading", [status]);
 
   const streamId = stream?.id;
-  console.log(stream);
+
   //Allowing user to stop streaming via livepeers useUpdateStream hook to change suspend to true
   const { mutate: updateStream } = useUpdateStream({
     streamId,
