@@ -5,6 +5,7 @@ import {
   updateProfile,
   getIsFollowing,
   updateFollowingStatus,
+  submitPost,
 } from "deso-protocol";
 import {
   Paper,
@@ -80,7 +81,7 @@ export const Stream = () => {
   const isLoading = useMemo(() => status === "loading", [status]);
 
   const streamId = stream?.id;
-
+  console.log(stream);
   //Allowing user to stop streaming via livepeers useUpdateStream hook to change suspend to true
   const { mutate: updateStream } = useUpdateStream({
     streamId,
@@ -175,6 +176,15 @@ export const Stream = () => {
           WavesStreamTitle: stream?.name,
         },
       });
+
+      submitPost({
+        UpdaterPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
+        BodyObj: {
+          Body: stream?.name,
+          VideoURLs: [`https://lvpr.tv/?v=${stream?.playbackId}`],
+          ImageURLs: [],
+        },
+      });
     } catch (error) {
       console.log("something happened: " + error);
       setIsButtonDisabled(false);
@@ -184,47 +194,36 @@ export const Stream = () => {
   return (
     <Paper shadow="sm" p="lg" withBorder>
       <>
-      <Group>
-      <CopyButton
-                      value={`https://waves-2.vercel.app/wave/${currentUser.ProfileEntryResponse.Username}`}
-                      timeout={2000}
-                    >
-                      {({ copied, copy }) => (
-                        <Button
-                        size="xs" 
-                          color={copied ? "teal" : "blue"}
-                          onClick={copy}
-                        >
-                          {copied ? (
-                            <>
-                            <Tooltip label="Copied Wave">
-                                
-                                
-                                <IconCheck size={16} />
-                                </Tooltip>
-                            </>
-                          ) : (
-                            <>
-                      <Tooltip label="Share your Wave">
-                              
-                               
-                                <IconScreenShare size={16} />
-                                </Tooltip>
-                            </>
-                          )}
-                        </Button>
-                      )}
-                    </CopyButton>
-                  
-       
-        <Tooltip label="Clear Idle Wave from your profile">
-          <Button size="xs" color="red" onClick={clearWave}>
-            Clear Wave
-          </Button>
+        <Group>
+          <CopyButton
+            value={`https://waves-2.vercel.app/wave/${currentUser.ProfileEntryResponse.Username}`}
+            timeout={2000}
+          >
+            {({ copied, copy }) => (
+              <Button size="xs" color={copied ? "teal" : "blue"} onClick={copy}>
+                {copied ? (
+                  <>
+                    <Tooltip label="Copied Wave">
+                      <IconCheck size={16} />
+                    </Tooltip>
+                  </>
+                ) : (
+                  <>
+                    <Tooltip label="Share your Wave">
+                      <IconScreenShare size={16} />
+                    </Tooltip>
+                  </>
+                )}
+              </Button>
+            )}
+          </CopyButton>
+
+          <Tooltip label="Clear Idle Wave from your profile">
+            <Button size="xs" color="red" onClick={clearWave}>
+              Clear Wave
+            </Button>
           </Tooltip>
-        
-        
-                    </Group>
+        </Group>
         <Space h="md" />
         <Center>
           <Text fz="lg" fw={777} c="dimmed" truncate>
