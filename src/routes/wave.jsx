@@ -31,8 +31,10 @@ import {
 } from "deso-protocol";
 import {
   Grid,
+  Container,
   CopyButton,
-  Popover,
+  Box,
+  Overlay,
   Avatar,
   Paper,
   Group,
@@ -199,6 +201,12 @@ export const Wave = () => {
       FollowerPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
     });
     getIsFollowingData();
+    notifications.show({
+      title: "Success",
+      icon: <IconCheck size="1.1rem" />,
+      color: "green",
+      message: `You successfully followed ${userName}`,
+    });
   };
 
   const unfollowUser = async () => {
@@ -209,6 +217,12 @@ export const Wave = () => {
       FollowerPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
     });
     getIsFollowingData();
+    notifications.show({
+      title: "Success",
+      icon: <IconCheck size="1.1rem" />,
+      color: "red",
+      message: `You successfully unfollowed ${userName}`,
+    });
   };
 
   const fetchPosts = async () => {
@@ -246,45 +260,24 @@ export const Wave = () => {
       // Convert to an integer
       const equivalentNanosInt = Number(equivalentNanosAmount);
 
-      // Check if currentUser exists
-      if (!currentUser) {
+      await sendDeso({
+        SenderPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
+        RecipientPublicKeyOrUsername: profile.PublicKeyBase58Check,
+        AmountNanos: equivalentNanosInt,
+        MinFeeRateNanosPerKB: 1000,
+      });
+    } catch (error) {
+      if (error.message.includes("RuleErrorInsufficientBalance")) {
         notifications.show({
-          title: "Login Required",
+          title: "Insufficient Balance",
           icon: <IconX size="1.1rem" />,
           color: "red",
-          message: "Please Signup or login to subscribe.",
-        });
-      }
-      // Check if currentUser's public key matches profile's public key
-      else if (
-        currentUser.PublicKeyBase58Check === profile.PublicKeyBase58Check
-      ) {
-        notifications.show({
-          title: "Error",
-          icon: <IconX size="1.1rem" />,
-          color: "red",
-          message: "You cannot subscribe to yourself.",
-        });
-      }
-      // Check if the user has enough balance
-      else if (userDESOBalance < equivalentNanosInt) {
-        notifications.show({
-          title: "Insufficient Funds",
-          icon: <IconX size="1.1rem" />,
-          color: "red",
-          message: "Hey there, please add DeSo to your Wallet!",
+          message:
+            "Hey there, please add DeSo to your Wallet to complete this transaction.",
         });
       } else {
-        // Proceed with the API call
-        await sendDeso({
-          SenderPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
-          RecipientPublicKeyOrUsername: profile.PublicKeyBase58Check,
-          AmountNanos: equivalentNanosInt,
-          MinFeeRateNanosPerKB: 1000,
-        });
+        console.error("Error submitting transaction:", error);
       }
-    } catch (error) {
-      console.error("Error subscribing to User:", error);
     }
   };
 
@@ -312,45 +305,24 @@ export const Wave = () => {
       // Convert to an integer
       const equivalentNanosInt = Number(equivalentNanosAmount);
 
-      // Check if currentUser exists
-      if (!currentUser) {
+      await sendDeso({
+        SenderPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
+        RecipientPublicKeyOrUsername: profile.PublicKeyBase58Check,
+        AmountNanos: equivalentNanosInt,
+        MinFeeRateNanosPerKB: 1000,
+      });
+    } catch (error) {
+      if (error.message.includes("RuleErrorInsufficientBalance")) {
         notifications.show({
-          title: "Login Required",
+          title: "Insufficient Balance",
           icon: <IconX size="1.1rem" />,
           color: "red",
-          message: "Please log in to subscribe.",
-        });
-      }
-      // Check if currentUser's public key matches profile's public key
-      else if (
-        currentUser.PublicKeyBase58Check === profile.PublicKeyBase58Check
-      ) {
-        notifications.show({
-          title: "Cannot Subscribe to Yourself",
-          icon: <IconX size="1.1rem" />,
-          color: "red",
-          message: "You cannot subscribe to yourself.",
-        });
-      }
-      // Check if the user has enough balance
-      else if (userDESOBalance < equivalentNanosInt) {
-        notifications.show({
-          title: "Insufficient Funds",
-          icon: <IconX size="1.1rem" />,
-          color: "red",
-          message: "Hey there, please add DeSo to your Wallet!",
+          message:
+            "Hey there, please add DeSo to your Wallet to complete this transaction.",
         });
       } else {
-        // Proceed with the API call
-        await sendDeso({
-          SenderPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
-          RecipientPublicKeyOrUsername: profile.PublicKeyBase58Check,
-          AmountNanos: equivalentNanosInt,
-          MinFeeRateNanosPerKB: 1000,
-        });
+        console.error("Error submitting transaction:", error);
       }
-    } catch (error) {
-      console.error("Error subscribing to User:", error);
     }
   };
 
@@ -378,45 +350,24 @@ export const Wave = () => {
       // Convert to an integer
       const equivalentNanosInt = Number(equivalentNanosAmount);
 
-      // Check if currentUser exists
-      if (!currentUser) {
+      await sendDeso({
+        SenderPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
+        RecipientPublicKeyOrUsername: profile.PublicKeyBase58Check,
+        AmountNanos: equivalentNanosInt,
+        MinFeeRateNanosPerKB: 1000,
+      });
+    } catch (error) {
+      if (error.message.includes("RuleErrorInsufficientBalance")) {
         notifications.show({
-          title: "Login Required",
+          title: "Insufficient Balance",
           icon: <IconX size="1.1rem" />,
           color: "red",
-          message: "Please log in to subscribe.",
-        });
-      }
-      // Check if currentUser's public key matches profile's public key
-      else if (
-        currentUser.PublicKeyBase58Check === profile.PublicKeyBase58Check
-      ) {
-        notifications.show({
-          title: "Cannot Subscribe to Yourself",
-          icon: <IconX size="1.1rem" />,
-          color: "red",
-          message: "You cannot subscribe to yourself.",
-        });
-      }
-      // Check if the user has enough balance
-      else if (userDESOBalance < equivalentNanosInt) {
-        notifications.show({
-          title: "Insufficient Funds",
-          icon: <IconX size="1.1rem" />,
-          color: "red",
-          message: "Hey there, please add DeSo to your Wallet!",
+          message:
+            "Hey there, please add DeSo to your Wallet to complete this transaction.",
         });
       } else {
-        // Proceed with the API call
-        await sendDeso({
-          SenderPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
-          RecipientPublicKeyOrUsername: profile.PublicKeyBase58Check,
-          AmountNanos: equivalentNanosInt,
-          MinFeeRateNanosPerKB: 1000,
-        });
+        console.error("Error submitting transaction:", error);
       }
-    } catch (error) {
-      console.error("Error subscribing to User:", error);
     }
   };
 
@@ -671,101 +622,160 @@ export const Wave = () => {
               </Center>
               <Space h="md" />
               <Center>
-                <Grid>
-                  <Grid.Col lg={4} sm={7}>
-                    <Paper shadow="xl" p="xl" withBorder>
-                      <List>
-                        <Text fw={700} align="center">
-                          Tier 1
-                        </Text>
-                        <Divider my="sm" />
+                <Box>
+                  <Grid>
+                    <Grid.Col lg={4} sm={7}>
+                      <Paper shadow="xl" p="xl" withBorder>
+                        <List>
+                          <Text fw={700} align="center">
+                            Tier 1
+                          </Text>
+                          <Divider my="sm" />
+                          <Space h="md" />
+                          <List.Item>
+                            <Text size="xs">1-Month Subcription</Text>
+                          </List.Item>
+                          <List.Item>
+                            <Text size="xs">1-Wave Point</Text>
+                          </List.Item>
+                          <List.Item>
+                            <Text size="xs">1-Month Subscriber NFT</Text>
+                          </List.Item>
+                        </List>
                         <Space h="md" />
-                        <List.Item>
-                          <Text size="xs">1-Month Subcription</Text>
-                        </List.Item>
-                        <List.Item>
-                          <Text size="xs">1-Wave Point</Text>
-                        </List.Item>
-                        <List.Item>
-                          <Text size="xs">1-Month Subscriber NFT</Text>
-                        </List.Item>
-                      </List>
-                      <Space h="md" />
-                      <Center>
-                        <Button
-                          onClick={subTier1}
-                          variant="light"
-                          radius="md"
-                          fullWidth
-                        >
-                          $5.00
-                        </Button>
-                      </Center>
-                    </Paper>
-                  </Grid.Col>
-                  <Grid.Col lg={4} sm={7}>
-                    <Paper shadow="xl" p="xl" withBorder>
-                      <List>
-                        <Text fw={700} align="center">
-                          Tier 2
-                        </Text>
-                        <Divider my="sm" />
+                        <Center>
+                          <Button
+                            onClick={subTier1}
+                            variant="light"
+                            radius="md"
+                            fullWidth
+                          >
+                            $5.00
+                          </Button>
+                        </Center>
+                      </Paper>
+                    </Grid.Col>
+                    <Grid.Col lg={4} sm={7}>
+                      <Paper shadow="xl" p="xl" withBorder>
+                        <List>
+                          <Text fw={700} align="center">
+                            Tier 2
+                          </Text>
+                          <Divider my="sm" />
+                          <Space h="md" />
+                          <List.Item>
+                            <Text size="xs">3-Month Subcription</Text>
+                          </List.Item>
+                          <List.Item>
+                            <Text size="xs">3-Wave Points</Text>
+                          </List.Item>
+                          <List.Item>
+                            <Text size="xs">3-Month Subscriber NFT</Text>
+                          </List.Item>
+                        </List>
                         <Space h="md" />
-                        <List.Item>
-                          <Text size="xs">3-Month Subcription</Text>
-                        </List.Item>
-                        <List.Item>
-                          <Text size="xs">3-Wave Points</Text>
-                        </List.Item>
-                        <List.Item>
-                          <Text size="xs">3-Month Subscriber NFT</Text>
-                        </List.Item>
-                      </List>
-                      <Space h="md" />
-                      <Center>
-                        <Button
-                          onClick={subTier2}
-                          variant="light"
-                          radius="md"
-                          fullWidth
-                        >
-                          $15.00
-                        </Button>
-                      </Center>
-                    </Paper>
-                  </Grid.Col>
-                  <Grid.Col lg={4} sm={7}>
-                    <Paper shadow="xl" p="xl" withBorder>
-                      <List>
-                        <Text fw={700} align="center">
-                          Tier 3
-                        </Text>
-                        <Divider my="sm" />
+                        <Center>
+                          <Button
+                            onClick={subTier2}
+                            variant="light"
+                            radius="md"
+                            fullWidth
+                          >
+                            $15.00
+                          </Button>
+                        </Center>
+                      </Paper>
+                    </Grid.Col>
+                    <Grid.Col lg={4} sm={7}>
+                      <Paper shadow="xl" p="xl" withBorder>
+                        <List>
+                          <Text fw={700} align="center">
+                            Tier 3
+                          </Text>
+                          <Divider my="sm" />
+                          <Space h="md" />
+                          <List.Item>
+                            <Text size="xs">6-Month Subcription</Text>
+                          </List.Item>
+                          <List.Item>
+                            <Text size="xs">6-Wave Points</Text>
+                          </List.Item>
+                          <List.Item>
+                            <Text size="xs">6-Month Subscriber NFT</Text>
+                          </List.Item>
+                        </List>
                         <Space h="md" />
-                        <List.Item>
-                          <Text size="xs">6-Month Subcription</Text>
-                        </List.Item>
-                        <List.Item>
-                          <Text size="xs">6-Wave Points</Text>
-                        </List.Item>
-                        <List.Item>
-                          <Text size="xs">6-Month Subscriber NFT</Text>
-                        </List.Item>
-                      </List>
-                      <Space h="md" />
-                      <Center>
-                        <Button
-                          onClick={subTier3}
-                          variant="light"
-                          radius="md"
-                          fullWidth
-                        >
-                          $25.00
-                        </Button>
-                      </Center>
-                    </Paper>
-                  </Grid.Col>
-                </Grid>
+                        <Center>
+                          <Button
+                            onClick={subTier3}
+                            variant="light"
+                            radius="md"
+                            fullWidth
+                          >
+                            $25.00
+                          </Button>
+                        </Center>
+                      </Paper>
+                    </Grid.Col>
+                  </Grid>
+                  {currentUser &&
+                    profile &&
+                    currentUser.PublicKeyBase58Check ===
+                      profile.PublicKeyBase58Check && (
+                      <Overlay center>
+                        <Container size="md" px={0}>
+                          <Space h={77} />
+                          <Paper shadow="xl" p="lg" withBorder>
+                            <Text fw={500}>
+                              Can't Subscribe to yourself. Switch Accounts to
+                              Subscribe!
+                            </Text>
+                            <Divider my="sm" />
+                            <Button
+                              leftIcon={<GiWaveCrest size="1rem" />}
+                              variant="gradient"
+                              gradient={{ from: "cyan", to: "indigo" }}
+                              onClick={() => identity.login()}
+                              fullWidth
+                            >
+                              Switch Account
+                            </Button>
+                          </Paper>
+                        </Container>
+                      </Overlay>
+                    )}
+
+                  {!currentUser && (
+                    <Overlay center>
+                      <Container size="md" px={0}>
+                        <Space h={77} />
+                        <Paper shadow="xl" p="lg" withBorder>
+                          <Text fw={500}>
+                            Please Signup or Login to Subscribe.
+                          </Text>
+                          <Divider my="sm" />
+                          <Button
+                            leftIcon={<GiWaveCrest size="1rem" />}
+                            variant="gradient"
+                            gradient={{ from: "cyan", to: "indigo" }}
+                            onClick={() => identity.login()}
+                            fullWidth
+                          >
+                            Sign Up
+                          </Button>
+                          <Space h="sm" />
+                          <Button
+                            fullWidth
+                            variant="default"
+                            onClick={() => identity.login()}
+                          >
+                            Login
+                          </Button>
+                        </Paper>
+                      </Container>
+                    </Overlay>
+                  )}
+                </Box>
               </Center>
             </Paper>
           </Modal>
