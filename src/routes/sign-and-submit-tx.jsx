@@ -36,9 +36,7 @@ import {
 import { getDisplayName } from "../helpers";
 import { DeSoIdentityContext } from "react-deso-protocol";
 import { Welcome } from "../components/Welcome";
-import { useCreateAsset, useAssetMetrics, Player } from "@livepeer/react";
-import { Asset } from "../components/VideoUpload";
-import { useDropzone } from "react-dropzone";
+
 import { IconCheck } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 
