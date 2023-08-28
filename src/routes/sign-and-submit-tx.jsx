@@ -403,7 +403,7 @@ export const SignAndSubmitTx = () => {
                     <TbVideoPlus size="1.2rem" />
                   </ActionIcon>
                   <Collapse in={opened}>
-                    <div>
+                    <div style={{ maxWidth: "100%" }}>
                       <Divider my="sm" />
                       <Space h="sm" />
 
@@ -418,8 +418,8 @@ export const SignAndSubmitTx = () => {
                             >
                               <input {...getInputProps()} />
                               <Group>
-                                <Text c="dimmed" fw={700}>
-                                  Drag and drop or Browse files
+                                <Text c="dimmed" fw={700} fz="sm">
+                                  Drag and Browse File
                                 </Text>
                               </Group>
                             </Button>
