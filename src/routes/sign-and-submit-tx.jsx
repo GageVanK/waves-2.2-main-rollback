@@ -329,8 +329,7 @@ export const SignAndSubmitTx = () => {
                   });
 
                   // Reset the form after submission
-                  toggle();
-                  setVideo(undefined);
+
                   form.reset();
                 }}
               >
@@ -357,7 +356,6 @@ export const SignAndSubmitTx = () => {
                 <Space h="sm" />
                 {imageURL && (
                   <div>
-                    <p>Uploaded Image:</p>
                     <Image
                       src={imageURL}
                       alt="Uploaded"
@@ -367,7 +365,9 @@ export const SignAndSubmitTx = () => {
                     />
                   </div>
                 )}
+                <Space h="sm" />
                 <Group postion="apart">
+                  <Space h="sm" />
                   <Button
                     variant="gradient"
                     gradient={{ from: "cyan", to: "indigo" }}
