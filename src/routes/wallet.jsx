@@ -1,7 +1,16 @@
-import { Space, Center, Badge, Text, Divider } from "@mantine/core";
+import {
+  Space,
+  Center,
+  Button,
+  Text,
+  Divider,
+  Container,
+  Paper,
+} from "@mantine/core";
 import { DeSoIdentityContext } from "react-deso-protocol";
 import { useContext } from "react";
-
+import { GiWaveCrest } from "react-icons/gi";
+import { identity } from "deso-protocol";
 export const Wallet = () => {
   // Using DeSoIdentityContext from DeSo
   // https://github.com/deso-protocol/react-deso-protocol
@@ -35,16 +44,36 @@ export const Wallet = () => {
           />
         ) : (
           <>
-            <Center>
-              <Badge
-                size="md"
-                radius="sm"
-                variant="gradient"
-                gradient={{ from: "indigo", to: "cyan", deg: 45 }}
-              >
-                Login to pay 50% less in fees
-              </Badge>
-            </Center>
+            <Space h="xl" />
+            <Container size="30rem" px={0}>
+              <Paper shadow="xl" p="lg" withBorder>
+                <Center>
+                  <Text c="dimmed" fw={700}>
+                    Please Sign Up or Login to view your Profile.
+                  </Text>
+                </Center>
+                <Space h="md" />
+                <Center>
+                  <Button
+                    fullWidth
+                    leftIcon={<GiWaveCrest size="1rem" />}
+                    variant="gradient"
+                    gradient={{ from: "cyan", to: "indigo" }}
+                    onClick={() => identity.login()}
+                  >
+                    Sign Up
+                  </Button>
+                  <Space w="xs" />
+                  <Button
+                    fullWidth
+                    variant="default"
+                    onClick={() => identity.login()}
+                  >
+                    Login
+                  </Button>
+                </Center>
+              </Paper>
+            </Container>
             <Space h="md" />
             <iframe
               title="heroswap"
