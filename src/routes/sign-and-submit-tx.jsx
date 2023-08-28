@@ -16,6 +16,7 @@ import React, {
 import { RiImageAddFill } from "react-icons/ri";
 import { TbVideoPlus } from "react-icons/tb";
 import {
+  Stack,
   Button,
   Center,
   Space,
@@ -34,6 +35,7 @@ import {
   Image,
   Collapse,
   Divider,
+  Notification,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { getDisplayName } from "../helpers";
@@ -41,7 +43,7 @@ import { DeSoIdentityContext } from "react-deso-protocol";
 import { Welcome } from "../components/Welcome";
 import { Player, useAssetMetrics, useCreateAsset } from "@livepeer/react";
 
-import { IconCheck, IconPlus } from "@tabler/icons-react";
+import { IconCheck, IconX } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 import { useDropzone } from "react-dropzone";
 
@@ -312,9 +314,10 @@ export const SignAndSubmitTx = () => {
                     BodyObj: {
                       Body: body,
                       ImageURLs: imageURL ? [imageURL] : [],
-                      VideoURLs: asset && asset[0]?.playbackId
-      ? [`https://lvpr.tv/?v=${asset[0].playbackId}`]
-      : [],
+                      VideoURLs:
+                        asset && asset[0]?.playbackId
+                          ? [`https://lvpr.tv/?v=${asset[0].playbackId}`]
+                          : [],
                     },
                   }).then((resp) => {
                     notifications.show({
@@ -326,6 +329,8 @@ export const SignAndSubmitTx = () => {
                   });
 
                   // Reset the form after submission
+                  toggle();
+                  setVideo(undefined);
                   form.reset();
                 }}
               >
@@ -399,60 +404,76 @@ export const SignAndSubmitTx = () => {
                   </ActionIcon>
                   <Collapse in={opened}>
                     <div>
-                    <Divider my="sm" />
-                    <Space h='sm'/>
-                  
-                   
-                      {!asset && (
-                        <Button
-                        color="blue"
-                        size="lg"
-                        variant="default"
-                          {...getRootProps({ className: "dropzone" })}
-                        >
-                          <input {...getInputProps()} />
-                          <Text c="dimmed" fw={700}>
-                            Drag and drop or Browse files
-                          </Text>
+                      <Divider my="sm" />
+                      <Space h="sm" />
 
-                          {error?.message && <p>{error.message}</p>}
-                        </Button>
+                      {!asset && (
+                        <>
+                          <Stack>
+                            <Button
+                              color="blue"
+                              size="lg"
+                              variant="default"
+                              {...getRootProps({ className: "dropzone" })}
+                            >
+                              <input {...getInputProps()} />
+                              <Group>
+                                <Text c="dimmed" fw={700}>
+                                  Drag and drop or Browse files
+                                </Text>
+                              </Group>
+                            </Button>
+
+                            <Group>
+                              {error?.message && (
+                                <>
+                                  <Notification
+                                    withCloseButton={false}
+                                    withBorder
+                                    icon={<IconX size="1.1rem" />}
+                                    color="red"
+                                  >
+                                    Bummer! {error.message}
+                                  </Notification>
+                                </>
+                              )}
+                            </Group>
+                          </Stack>
+                        </>
                       )}
 
-<Space h='sm'/>
-{video ? (
-                      <>
-                      <Text c="dimmed" td="underline" fw={500}>
-                      File Selected:
-                    </Text>
-                        <Text c="dimmed" fw={500}>
-                          {video.name}
-                        
-                        </Text>
-                      </>
+                      <Space h="sm" />
+                      {video ? (
+                        <>
+                          <Text c="dimmed" td="underline" fw={500}>
+                            File Selected:
+                          </Text>
+                          <Text c="dimmed" fw={500}>
+                            {video.name}
+                          </Text>
+                        </>
                       ) : (
                         <></>
                       )}
 
-<Space h='sm'/>
+                      <Space h="sm" />
                       {asset?.[0]?.playbackId && (
                         <>
                           <Player
                             title={asset[0].name}
                             playbackId={asset[0].playbackId}
                           />
-                         
                         </>
                       )}
 
-<Space h='sm'/>
+                      <Space h="sm" />
                       <div>
                         {progressFormatted && (
                           <Text fz="sm" c="dimmed">
                             {progressFormatted}
                           </Text>
                         )}
- <Space h='sm'/>
+                        <Space h="sm" />
                         {!asset?.[0].id && (
                           <Button
                             variant="light"
