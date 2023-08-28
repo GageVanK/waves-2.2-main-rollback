@@ -329,8 +329,7 @@ export const SignAndSubmitTx = () => {
                   });
 
                   // Reset the form after submission
-                  toggle();
-                  setVideo(undefined);
+
                   form.reset();
                 }}
               >
@@ -357,7 +356,6 @@ export const SignAndSubmitTx = () => {
                 <Space h="sm" />
                 {imageURL && (
                   <div>
-                    <p>Uploaded Image:</p>
                     <Image
                       src={imageURL}
                       alt="Uploaded"
@@ -367,7 +365,9 @@ export const SignAndSubmitTx = () => {
                     />
                   </div>
                 )}
+                <Space h="sm" />
                 <Group postion="apart">
+                  <Space h="sm" />
                   <Button
                     variant="gradient"
                     gradient={{ from: "cyan", to: "indigo" }}
@@ -403,7 +403,7 @@ export const SignAndSubmitTx = () => {
                     <TbVideoPlus size="1.2rem" />
                   </ActionIcon>
                   <Collapse in={opened}>
-                    <div>
+                    <div style={{ maxWidth: "100%" }}>
                       <Divider my="sm" />
                       <Space h="sm" />
 
@@ -418,8 +418,8 @@ export const SignAndSubmitTx = () => {
                             >
                               <input {...getInputProps()} />
                               <Group>
-                                <Text c="dimmed" fw={700}>
-                                  Drag and drop or Browse files
+                                <Text c="dimmed" fw={700} fz="sm">
+                                  Drag and Browse File
                                 </Text>
                               </Group>
                             </Button>
