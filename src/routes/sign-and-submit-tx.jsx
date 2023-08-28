@@ -5,7 +5,7 @@ import {
   getSingleProfile,
   uploadImage,
 } from "deso-protocol";
-import {
+import React, {
   useContext,
   useRef,
   useState,
@@ -14,7 +14,7 @@ import {
   useCallback,
 } from "react";
 import { RiImageAddFill } from "react-icons/ri";
-
+import { TbVideoPlus } from "react-icons/tb";
 import {
   Button,
   Center,
@@ -32,21 +32,80 @@ import {
   FileButton,
   ActionIcon,
   Image,
+  Collapse,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { getDisplayName } from "../helpers";
 import { DeSoIdentityContext } from "react-deso-protocol";
 import { Welcome } from "../components/Welcome";
+import { Player, useAssetMetrics, useCreateAsset } from "@livepeer/react";
 
-import { IconCheck } from "@tabler/icons-react";
+import { IconCheck, IconPlus } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
+import { useDropzone } from "react-dropzone";
 
 export const SignAndSubmitTx = () => {
-  const { currentUser, isLoading } = useContext(DeSoIdentityContext);
+  const { currentUser } = useContext(DeSoIdentityContext);
   const [newUsername, setNewUsername] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [imageFile, setImageFile] = useState(null);
   const [imageURL, setImageURL] = useState("");
+  const [opened, { toggle }] = useDisclosure(false);
+  const [video, setVideo] = useState();
+  const {
+    mutate: createAsset,
+    data: asset,
+    status,
+    progress,
+    error,
+  } = useCreateAsset(
+    video
+      ? {
+          sources: [{ name: video.name, file: video }],
+        }
+      : null
+  );
+
+  const { data: metrics } = useAssetMetrics({
+    assetId: asset?.[0].id,
+    refetchInterval: 30000,
+  });
+
+  const onDrop = useCallback(async (acceptedFiles) => {
+    if (acceptedFiles && acceptedFiles.length > 0 && acceptedFiles?.[0]) {
+      setVideo(acceptedFiles[0]);
+    }
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: {
+      "video/*": [".mp4"],
+    },
+    maxFiles: 1,
+    onDrop,
+  });
+
+  const isLoading = useMemo(
+    () =>
+      status === "loading" ||
+      (asset?.[0] && asset[0].status?.phase !== "ready"),
+    [status, asset]
+  );
+
+  const progressFormatted = useMemo(
+    () =>
+      progress?.[0].phase === "failed"
+        ? "Failed to process video."
+        : progress?.[0].phase === "waiting"
+        ? "Waiting..."
+        : progress?.[0].phase === "uploading"
+        ? `Uploading: ${Math.round(progress?.[0]?.progress * 100)}%`
+        : progress?.[0].phase === "processing"
+        ? `Processing: ${Math.round(progress?.[0].progress * 100)}%`
+        : null,
+    [progress]
+  );
 
   const handleUploadImage = async () => {
     try {
@@ -327,6 +386,73 @@ export const SignAndSubmitTx = () => {
                       </Tooltip>
                     )}
                   </FileButton>
+                  <ActionIcon
+                    color="blue"
+                    size="lg"
+                    variant="default"
+                    onClick={toggle}
+                  >
+                    <TbVideoPlus size="1.2rem" />
+                  </ActionIcon>
+                  <Collapse in={opened}>
+                    <div>
+                      {!asset && (
+                        <Paper
+                          shadow="xl"
+                          radius="md"
+                          p="xl"
+                          withBorder
+                          {...getRootProps({ className: "dropzone" })}
+                        >
+                          <input {...getInputProps()} />
+                          <Text c="dimmed" fw={700}>
+                            Drag and drop or browse files
+                          </Text>
+
+                          {error?.message && <p>{error.message}</p>}
+                        </Paper>
+                      )}
+
+                      {video ? (
+                        <Text c="dimmed" fw={500}>
+                          {video.name}
+                        </Text>
+                      ) : (
+                        <></>
+                      )}
+
+                      {asset?.[0]?.playbackId && (
+                        <>
+                          <Player
+                            title={asset[0].name}
+                            playbackId={asset[0].playbackId}
+                          />
+                          {asset[0].playbackId}
+                        </>
+                      )}
+
+                      <div>
+                        {progressFormatted && (
+                          <Text fz="sm" c="dimmed">
+                            {progressFormatted}
+                          </Text>
+                        )}
+
+                        {!asset?.[0].id && (
+                          <Button
+                            variant="light"
+                            size="xs"
+                            onClick={() => {
+                              createAsset?.();
+                            }}
+                            disabled={isLoading || !createAsset}
+                          >
+                            Upload
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </Collapse>
                 </Group>
               </form>
             </Paper>
