@@ -313,7 +313,7 @@ export const SignAndSubmitTx = () => {
                       Body: body,
                       ImageURLs: imageURL ? [imageURL] : [],
                       VideoURLs: asset && asset[0]?.playbackId
-      ? [`https://lvpr.tv?v=${asset[0].playbackId}`]
+      ? [`https://lvpr.tv/?v=${asset[0].playbackId}`]
       : [],
                     },
                   }).then((resp) => {
