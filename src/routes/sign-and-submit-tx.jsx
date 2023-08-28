@@ -33,6 +33,7 @@ import {
   ActionIcon,
   Image,
   Collapse,
+  Divider,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { getDisplayName } from "../helpers";
@@ -45,7 +46,7 @@ import { notifications } from "@mantine/notifications";
 import { useDropzone } from "react-dropzone";
 
 export const SignAndSubmitTx = () => {
-  const { currentUser } = useContext(DeSoIdentityContext);
+  const { currentUser, isLoading } = useContext(DeSoIdentityContext);
   const [newUsername, setNewUsername] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -86,7 +87,7 @@ export const SignAndSubmitTx = () => {
     onDrop,
   });
 
-  const isLoading = useMemo(
+  const isVideoLoading = useMemo(
     () =>
       status === "loading" ||
       (asset?.[0] && asset[0].status?.phase !== "ready"),
@@ -311,7 +312,9 @@ export const SignAndSubmitTx = () => {
                     BodyObj: {
                       Body: body,
                       ImageURLs: imageURL ? [imageURL] : [],
-                      VideoURLs: [],
+                      VideoURLs: asset && asset[0]?.playbackId
+      ? [`https://lvpr.tv?v=${asset[0].playbackId}`]
+      : [],
                     },
                   }).then((resp) => {
                     notifications.show({
@@ -396,48 +399,60 @@ export const SignAndSubmitTx = () => {
                   </ActionIcon>
                   <Collapse in={opened}>
                     <div>
+                    <Divider my="sm" />
+                    <Space h='sm'/>
+                  
+                   
                       {!asset && (
-                        <Paper
-                          shadow="xl"
-                          radius="md"
-                          p="xl"
-                          withBorder
+                        <Button
+                        color="blue"
+                        size="lg"
+                        variant="default"
                           {...getRootProps({ className: "dropzone" })}
                         >
                           <input {...getInputProps()} />
                           <Text c="dimmed" fw={700}>
-                            Drag and drop or browse files
+                            Drag and drop or Browse files
                           </Text>
 
                           {error?.message && <p>{error.message}</p>}
-                        </Paper>
+                        </Button>
                       )}
 
-                      {video ? (
+<Space h='sm'/>
+{video ? (
+                      <>
+                      <Text c="dimmed" td="underline" fw={500}>
+                      File Selected:
+                    </Text>
                         <Text c="dimmed" fw={500}>
                           {video.name}
+                        
                         </Text>
+                      </>
                       ) : (
                         <></>
                       )}
 
+<Space h='sm'/>
                       {asset?.[0]?.playbackId && (
                         <>
                           <Player
                             title={asset[0].name}
                             playbackId={asset[0].playbackId}
                           />
-                          {asset[0].playbackId}
+                         
                         </>
                       )}
 
+<Space h='sm'/>
                       <div>
                         {progressFormatted && (
                           <Text fz="sm" c="dimmed">
                             {progressFormatted}
                           </Text>
                         )}
-
+ <Space h='sm'/>
                         {!asset?.[0].id && (
                           <Button
                             variant="light"
@@ -445,7 +460,7 @@ export const SignAndSubmitTx = () => {
                             onClick={() => {
                               createAsset?.();
                             }}
-                            disabled={isLoading || !createAsset}
+                            disabled={isVideoLoading || !createAsset}
                           >
                             Upload
                           </Button>
