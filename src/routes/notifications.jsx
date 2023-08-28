@@ -6,16 +6,17 @@ import {
   Space,
   Center,
   Divider,
-  List,
+  Container,
   Loader,
-  Badge,
+  Button,
   UnstyledButton,
   createStyles,
 } from "@mantine/core";
 import { useState, useContext, useEffect } from "react";
 import { DeSoIdentityContext } from "react-deso-protocol";
-import { getNotifications, getSingleProfile } from "deso-protocol";
+import { getNotifications, getSingleProfile, identity } from "deso-protocol";
 import { useNavigate } from "react-router";
+import { GiWaveCrest } from "react-icons/gi";
 import {
   IconHeart,
   IconUsers,
@@ -23,7 +24,7 @@ import {
   IconDiamond,
   IconRecycle,
   IconAt,
-  IconCoin
+  IconCoin,
 } from "@tabler/icons-react";
 
 const useStyles = createStyles((theme) => ({
@@ -102,280 +103,271 @@ export const NotificationsPage = () => {
 
             notifications.map((notification, index) => (
               <>
-             <Paper shadow="sm" p="xl" withBorder>
-                <Group className={classes.main} >
-                  <UnstyledButton
-                    onClick={() => {
-                      navigate(`/wave/${notification.username}`);
-                    }}
-                    variant="transparent"
-                  >
-                    <Group style={{ width: "100%", flexGrow: 1 }}>
-                      <Avatar
-                        size="md"
-                        src={
-                          `https://node.deso.org/api/v0/get-single-profile-picture/${notification.Metadata.TransactorPublicKeyBase58Check}` ||
-                          null
-                        }
-                      />
-                      <div>
-                        <Text truncate weight="bold" size="sm">
-                          {notification.username}
-                        </Text>
-                      </div>
-                    </Group>
-                  </UnstyledButton>
-
-                  {notification.Metadata.TxnType === "LIKE" && (
-                    <>
-                   
-                      <div>
-                        <IconHeart />
-                      </div>
-                      <Text weight="bold" size="sm">
-                        Liked your
-                      </Text>
-                      
-                   
-                    <Group position="right">
+                <Paper shadow="sm" p="xl" withBorder>
+                  <Group className={classes.main}>
                     <UnstyledButton
                       onClick={() => {
-                        navigate(
-                          `/post/${notification.Metadata.LikeTxindexMetadata.PostHashHex}`
-                        );
+                        navigate(`/wave/${notification.username}`);
                       }}
                       variant="transparent"
                     >
-                      <Text weight="bold" size="sm">
-                        Post
-                      </Text>
+                      <Group style={{ width: "100%", flexGrow: 1 }}>
+                        <Avatar
+                          size="md"
+                          src={
+                            `https://node.deso.org/api/v0/get-single-profile-picture/${notification.Metadata.TransactorPublicKeyBase58Check}` ||
+                            null
+                          }
+                        />
+                        <div>
+                          <Text truncate weight="bold" size="sm">
+                            {notification.username}
+                          </Text>
+                        </div>
+                      </Group>
                     </UnstyledButton>
+
+                    {notification.Metadata.TxnType === "LIKE" && (
+                      <>
+                        <div>
+                          <IconHeart />
+                        </div>
+                        <Text weight="bold" size="sm">
+                          Liked your
+                        </Text>
+
+                        <Group position="right">
+                          <UnstyledButton
+                            onClick={() => {
+                              navigate(
+                                `/post/${notification.Metadata.LikeTxindexMetadata.PostHashHex}`
+                              );
+                            }}
+                            variant="transparent"
+                          >
+                            <Text weight="bold" size="sm">
+                              Post
+                            </Text>
+                          </UnstyledButton>
+                        </Group>
+                      </>
+                    )}
+                    {notification.Metadata.TxnType === "FOLLOW" && (
+                      <Group position="right">
+                        <div>
+                          <IconUsers />
+                        </div>
+                        <Text weight="bold" size="sm">
+                          Followed you
+                        </Text>
+                      </Group>
+                    )}
+                    {notification.Metadata.TxnType === "SUBMIT_POST" &&
+                      notification.Metadata.AffectedPublicKeys[0].Metadata ===
+                        "RepostedPublicKeyBase58Check" && (
+                        <>
+                          <Group>
+                            <div>
+                              <IconRecycle />
+                            </div>
+                            <Text weight="bold" size="sm">
+                              Reposted your
+                            </Text>
+                          </Group>
+                          <Group position="right">
+                            <UnstyledButton
+                              onClick={() => {
+                                navigate(
+                                  `/post/${notification.Metadata.SubmitPostTxindexMetadata.PostHashBeingModifiedHex}`
+                                );
+                              }}
+                              variant="transparent"
+                            >
+                              <Text weight="bold" size="sm">
+                                Post
+                              </Text>
+                            </UnstyledButton>
+                          </Group>
+                        </>
+                      )}
+                    {notification.Metadata.TxnType === "SUBMIT_POST" &&
+                      notification.Metadata.AffectedPublicKeys.length >= 2 &&
+                      notification.Metadata.AffectedPublicKeys[0].Metadata ===
+                        "BasicTransferOutput" &&
+                      notification.Metadata.AffectedPublicKeys[1].Metadata ===
+                        "MentionedPublicKeyBase58Check" && (
+                        <>
+                          <Group>
+                            <div>
+                              <IconAt />
+                            </div>
+                            <Text weight="bold" size="sm">
+                              Mentioned You in
+                            </Text>
+                          </Group>
+                          <Group position="right">
+                            <UnstyledButton
+                              onClick={() => {
+                                navigate(
+                                  `/post/${notification.Metadata.SubmitPostTxindexMetadata.PostHashBeingModifiedHex}`
+                                );
+                              }}
+                              variant="transparent"
+                            >
+                              <Text weight="bold" size="sm">
+                                Post
+                              </Text>
+                            </UnstyledButton>
+                          </Group>
+                        </>
+                      )}
+
+                    {notification.Metadata.TxnType === "SUBMIT_POST" &&
+                      notification.Metadata.AffectedPublicKeys.length >= 2 &&
+                      notification.Metadata.AffectedPublicKeys[1].Metadata ===
+                        "ParentPosterPublicKeyBase58Check" && (
+                        <>
+                          <Group>
+                            <div>
+                              <IconAt />
+                            </div>
+                            <Text weight="bold" size="sm">
+                              Commented on
+                            </Text>
+                          </Group>
+                          <Group position="right">
+                            <UnstyledButton
+                              onClick={() => {
+                                navigate(
+                                  `/post/${notification.Metadata.SubmitPostTxindexMetadata.ParentPostHashHex}`
+                                );
+                              }}
+                              variant="transparent"
+                            >
+                              <Text weight="bold" size="sm">
+                                Post
+                              </Text>
+                            </UnstyledButton>
+                          </Group>
+                        </>
+                      )}
+                    {notification.Metadata.TxnType === "SUBMIT_POST" &&
+                      notification.Metadata.AffectedPublicKeys[0].Metadata ===
+                        "MentionedPublicKeyBase58Check" && (
+                        <>
+                          <Group>
+                            <div>
+                              <IconAt />
+                            </div>
+                            <Text weight="bold" size="sm">
+                              Mentioned You in
+                            </Text>
+                          </Group>
+                          <Group position="right">
+                            <UnstyledButton
+                              onClick={() => {
+                                navigate(
+                                  `/post/${notification.Metadata.SubmitPostTxindexMetadata.PostHashBeingModifiedHex}`
+                                );
+                              }}
+                              variant="transparent"
+                            >
+                              <Text weight="bold" size="sm">
+                                Post
+                              </Text>
+                            </UnstyledButton>
+                          </Group>
+                        </>
+                      )}
+                    {notification.Metadata.TxnType === "SUBMIT_POST" &&
+                      notification.Metadata.AffectedPublicKeys[0].Metadata ===
+                        "ParentPosterPublicKeyBase58Check" && (
+                        <>
+                          <Group>
+                            <div>
+                              <IconMessage2 />
+                            </div>
+                            <Text weight="bold" size="sm">
+                              Commented on
+                            </Text>
+                          </Group>
+                          <Group position="right">
+                            <UnstyledButton
+                              onClick={() => {
+                                navigate(
+                                  `/post/${notification.Metadata.SubmitPostTxindexMetadata.ParentPostHashHex}`
+                                );
+                              }}
+                              variant="transparent"
+                            >
+                              <Text weight="bold" size="sm">
+                                Post
+                              </Text>
+                            </UnstyledButton>
+                          </Group>
+                        </>
+                      )}
+
+                    {notification.Metadata.BasicTransferTxindexMetadata &&
+                      notification.Metadata.BasicTransferTxindexMetadata
+                        .DiamondLevel && (
+                        <>
+                          <Group position="right">
+                            <div>
+                              <IconDiamond />
+                            </div>
+                            <Text weight="bold" size="sm">
+                              Tipped a Diamond
+                            </Text>
+                          </Group>
+                        </>
+                      )}
+                    {notification.Metadata.TxnType === "CREATOR_COIN" &&
+                      notification.Metadata.CreatorCoinTxindexMetadata
+                        .OperationType === "buy" && (
+                        <>
+                          <Group position="right">
+                            <div>
+                              <IconCoin />
+                            </div>
+                            <Text weight="bold" size="sm">
+                              Bought your Creator Coin
+                            </Text>
+                          </Group>
+                        </>
+                      )}
+                    {notification.Metadata.TxnType === "CREATOR_COIN" &&
+                      notification.Metadata.CreatorCoinTxindexMetadata
+                        .OperationType === "sold" && (
+                        <>
+                          <Group position="right">
+                            <div>
+                              <IconCoin />
+                            </div>
+                            <Text weight="bold" size="sm">
+                              Bought your Creator Coin
+                            </Text>
+                          </Group>
+                        </>
+                      )}
+                    {notification.Metadata.TxnType === "BASIC_TRANSFER" &&
+                      notification.Metadata.AffectedPublicKeys[0].Metadata ===
+                        "BasicTransferOutput" &&
+                      notification.Metadata.AffectedPublicKeys[0]
+                        .PublicKeyBase58Check ===
+                        currentUser.PublicKeyBase58Check && (
+                        <>
+                          <Group position="right">
+                            <div>
+                              <IconCoin />
+                            </div>
+                            <Text weight="bold" size="sm">
+                              Sent You DeSo
+                            </Text>
+                          </Group>
+                        </>
+                      )}
                   </Group>
-                    </>
-                  )}
-                  {notification.Metadata.TxnType === "FOLLOW" && (
-                    <Group position='right'>
-                      <div>
-                        <IconUsers />
-                      </div>
-                      <Text weight="bold" size="sm">
-                        Followed you
-                      </Text>
-                    </Group>
-                  )}
-                  {notification.Metadata.TxnType === "SUBMIT_POST" &&
-                    notification.Metadata.AffectedPublicKeys[0].Metadata ===
-                      "RepostedPublicKeyBase58Check" && (
-                      <>
-                      <Group>
-                        <div>
-                          <IconRecycle />
-                        </div>
-                        <Text weight="bold" size="sm">
-                          Reposted your
-                        </Text>
-                          
-                      </Group>
-                       <Group position="right">
-                       <UnstyledButton
-                      onClick={() => {
-                        navigate(
-                          `/post/${notification.Metadata.SubmitPostTxindexMetadata.PostHashBeingModifiedHex}`
-                        );
-                      }}
-                      variant="transparent"
-                    >
-                       <Text weight="bold" size="sm">
-                         Post
-                       </Text>
-                       </UnstyledButton>
-                     </Group>
-                     </>
-                    )}
-{notification.Metadata.TxnType === "SUBMIT_POST" && notification.Metadata.AffectedPublicKeys.length >= 2 && notification.Metadata.AffectedPublicKeys[0].Metadata === "BasicTransferOutput" &&
-  notification.Metadata.AffectedPublicKeys[1].Metadata === "MentionedPublicKeyBase58Check" && (
-    <>
-      <Group>
-        <div>
-          <IconAt />
-        </div>
-        <Text weight="bold" size="sm">
-          Mentioned You in
-        </Text>
-      </Group>
-      <Group position="right">
-        <UnstyledButton
-          onClick={() => {
-            navigate(
-              `/post/${notification.Metadata.SubmitPostTxindexMetadata.PostHashBeingModifiedHex}`
-            );
-          }}
-          variant="transparent"
-        >
-          <Text weight="bold" size="sm">
-            Post
-          </Text>
-        </UnstyledButton>
-      </Group>
-    </>
-  )}
-
-{notification.Metadata.TxnType === "SUBMIT_POST" && notification.Metadata.AffectedPublicKeys.length >= 2 &&
-  notification.Metadata.AffectedPublicKeys[1].Metadata === "ParentPosterPublicKeyBase58Check" && (
-    <>
-      <Group>
-        <div>
-          <IconAt />
-        </div>
-        <Text weight="bold" size="sm">
-          Commented on
-        </Text>
-      </Group>
-      <Group position="right">
-        <UnstyledButton
-          onClick={() => {
-            navigate(
-              `/post/${notification.Metadata.SubmitPostTxindexMetadata.ParentPostHashHex}`
-            );
-          }}
-          variant="transparent"
-        >
-          <Text weight="bold" size="sm">
-            Post
-          </Text>
-        </UnstyledButton>
-      </Group>
-    </>
-  )}
-                  {notification.Metadata.TxnType === "SUBMIT_POST" &&
-                    notification.Metadata.AffectedPublicKeys[0].Metadata ===
-                      "MentionedPublicKeyBase58Check" && (
-                    <>
-                    <Group>
-                        <div>
-                          <IconAt />
-                        </div>
-                        <Text weight="bold" size="sm">
-                          Mentioned You in
-                        </Text>
-                          
-                      </Group>
-                       <Group position="right">
-                       <UnstyledButton
-                      onClick={() => {
-                        navigate(
-                          `/post/${notification.Metadata.SubmitPostTxindexMetadata.PostHashBeingModifiedHex}`
-                        );
-                      }}
-                      variant="transparent"
-                    >
-                       <Text weight="bold" size="sm">
-                         Post
-                       </Text>
-                       </UnstyledButton>
-                     </Group>
-                     </>
-                    )}
-                  {notification.Metadata.TxnType === "SUBMIT_POST" &&
-                    notification.Metadata.AffectedPublicKeys[0].Metadata ===
-                      "ParentPosterPublicKeyBase58Check" && (
-                      <>
-                      <Group>
-                        <div>
-                          <IconMessage2 />
-                        </div>
-                        <Text weight="bold" size="sm">
-                          Commented on
-                        </Text>
-                       
-                      </Group>
-                       <Group position="right">
-                       <UnstyledButton
-                      onClick={() => {
-                        navigate(
-                          `/post/${notification.Metadata.SubmitPostTxindexMetadata.ParentPostHashHex}`
-                        );
-                      }}
-                      variant="transparent"
-                    >
-                       <Text weight="bold" size="sm">
-                         Post
-                       </Text>
-                       </UnstyledButton>
-                     </Group>
-                     </>
-                    )}
-
-                  {notification.Metadata.BasicTransferTxindexMetadata &&
-                    notification.Metadata.BasicTransferTxindexMetadata
-                      .DiamondLevel && (
-                    <>
-                    <Group position="right">
-                        <div>
-                          <IconDiamond />
-                        </div>
-                        <Text weight="bold" size="sm">
-                          Tipped a Diamond
-                        </Text>
-                      
-                      </Group>
-                        
-                      </>
-                    )}
-                    {notification.Metadata.TxnType === 
-"CREATOR_COIN" &&
-                    notification.Metadata.CreatorCoinTxindexMetadata
-                      .OperationType === "buy" && (
-                    <>
-                    <Group position="right">
-                        <div>
-                          <IconCoin />
-                        </div>
-                        <Text weight="bold" size="sm">
-                          Bought your Creator Coin
-                        </Text>
-                      
-                      </Group>
-                        
-                      </>
-                    )}
-                    {notification.Metadata.TxnType === 
-"CREATOR_COIN" &&
-                    notification.Metadata.CreatorCoinTxindexMetadata
-                      .OperationType === "sold" && (
-                    <>
-                    <Group position="right">
-                        <div>
-                          <IconCoin />
-                        </div>
-                        <Text weight="bold" size="sm">
-                          Bought your Creator Coin
-                        </Text>
-                      
-                      </Group>
-                        
-                      </>
-                    )}
-                    {notification.Metadata.TxnType === 
- "BASIC_TRANSFER" &&
- notification.Metadata.AffectedPublicKeys[0].Metadata ===
- "BasicTransferOutput" && notification.Metadata.AffectedPublicKeys[0].PublicKeyBase58Check
- === currentUser.PublicKeyBase58Check && (
-                    <>
-                    <Group position="right">
-                        <div>
-                          <IconCoin />
-                        </div>
-                        <Text weight="bold" size="sm">
-                          Sent You DeSo
-                        </Text>
-                      
-                      </Group>
-                        
-                      </>
-                    )}
-                   
-                </Group>
                 </Paper>
               </>
             ))
@@ -384,16 +376,35 @@ export const NotificationsPage = () => {
       ) : (
         <>
           <Space h="xl" />
-          <Center>
-            <Badge
-              size="md"
-              radius="sm"
-              variant="gradient"
-              gradient={{ from: "indigo", to: "cyan", deg: 45 }}
-            >
-              Please login to view your Notifications.
-            </Badge>
-          </Center>
+          <Container size="30rem" px={0}>
+            <Paper shadow="xl" p="lg" withBorder>
+              <Center>
+                <Text c="dimmed" fw={700}>
+                  Please Sign Up or Login to view your Profile.
+                </Text>
+              </Center>
+              <Space h="md" />
+              <Center>
+                <Button
+                  fullWidth
+                  leftIcon={<GiWaveCrest size="1rem" />}
+                  variant="gradient"
+                  gradient={{ from: "cyan", to: "indigo" }}
+                  onClick={() => identity.login()}
+                >
+                  Sign Up
+                </Button>
+                <Space w="xs" />
+                <Button
+                  fullWidth
+                  variant="default"
+                  onClick={() => identity.login()}
+                >
+                  Login
+                </Button>
+              </Center>
+            </Paper>
+          </Container>
         </>
       )}
       <Space h={111} />

@@ -10,6 +10,7 @@ import {
   Image,
   Tabs,
   TypographyStylesProvider,
+  Container,
   createStyles,
   ActionIcon,
   Tooltip,
@@ -20,7 +21,7 @@ import {
   Badge,
   rem,
 } from "@mantine/core";
-
+import { GiWaveCrest } from "react-icons/gi";
 import { useState, useContext, useEffect } from "react";
 import { DeSoIdentityContext } from "react-deso-protocol";
 import {
@@ -29,7 +30,7 @@ import {
   getPostsForUser,
   getNFTsForUser,
   updateProfile,
-  createAccessGroup,
+  identity,
 } from "deso-protocol";
 import { Stream } from "../components/Stream";
 import { getDisplayName } from "../helpers";
@@ -41,7 +42,7 @@ import {
   IconSettings,
   IconScriptPlus,
   IconScriptMinus,
-  IconMessageShare
+  IconMessageShare,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { SetUsername } from "../components/SetUsername";
@@ -347,19 +348,19 @@ export const Profile = () => {
                     className={classes.comment}
                   >
                     <Group position="right">
-                  <Tooltip label="Go to Post">
-                <ActionIcon  color="blue" size="sm" variant="light"
-          onClick={() => {
-            navigate(
-              `/post/${post.PostHashHex}`
-            );
-          }}
-         
-        >
-<IconMessageShare />
-</ActionIcon>
-</Tooltip>
-</Group>
+                      <Tooltip label="Go to Post">
+                        <ActionIcon
+                          color="blue"
+                          size="sm"
+                          variant="light"
+                          onClick={() => {
+                            navigate(`/post/${post.PostHashHex}`);
+                          }}
+                        >
+                          <IconMessageShare />
+                        </ActionIcon>
+                      </Tooltip>
+                    </Group>
                     <Center>
                       {post.ProfileEntryResponse &&
                       post.ProfileEntryResponse.ExtraData
@@ -424,15 +425,26 @@ export const Profile = () => {
 
                     <Space h="md" />
                     {post.PostExtraData?.EmbedVideoURL && (
-          
-          <Group style={{ height: "750px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-  
-  <iframe style={{ height: "100%", border: "none", borderRadius: "8px" }} title="embed" src={post.PostExtraData.EmbedVideoURL} />
-</Group>
-
-
-        )}
-          {post.VideoURLs && (
+                      <Group
+                        style={{
+                          height: "750px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <iframe
+                          style={{
+                            height: "100%",
+                            border: "none",
+                            borderRadius: "8px",
+                          }}
+                          title="embed"
+                          src={post.PostExtraData.EmbedVideoURL}
+                        />
+                      </Group>
+                    )}
+                    {post.VideoURLs && (
                       <iframe
                         style={{ width: "100%", height: "100%" }}
                         title={post.PostHashHex}
@@ -461,19 +473,21 @@ export const Profile = () => {
                         className={classes.comment}
                       >
                         <Group position="right">
-                  <Tooltip label="Go to Post">
-                <ActionIcon  color="blue" size="sm" variant="light"
-          onClick={() => {
-            navigate(
-              `/post/${post.RepostedPostEntryResponse.PostHashHex}`
-            );
-          }}
-         
-        >
-<IconMessageShare />
-</ActionIcon>
-</Tooltip>
-</Group>
+                          <Tooltip label="Go to Post">
+                            <ActionIcon
+                              color="blue"
+                              size="sm"
+                              variant="light"
+                              onClick={() => {
+                                navigate(
+                                  `/post/${post.RepostedPostEntryResponse.PostHashHex}`
+                                );
+                              }}
+                            >
+                              <IconMessageShare />
+                            </ActionIcon>
+                          </Tooltip>
+                        </Group>
                         <Center>
                           <ActionIcon
                             onClick={() => {
@@ -543,15 +557,30 @@ export const Profile = () => {
                         </Spoiler>
                         <Space h="md" />
                         <Space h="md" />
-                        {post.RepostedPostEntryResponse.PostExtraData?.EmbedVideoURL && (
-          
-          <Group style={{ height: "750px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-  
-  <iframe style={{ height: "100%", border: "none", borderRadius: "8px" }} title="embed" src={post.RepostedPostEntryResponse.PostExtraData.EmbedVideoURL} />
-</Group>
-
-
-        )}
+                        {post.RepostedPostEntryResponse.PostExtraData
+                          ?.EmbedVideoURL && (
+                          <Group
+                            style={{
+                              height: "750px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <iframe
+                              style={{
+                                height: "100%",
+                                border: "none",
+                                borderRadius: "8px",
+                              }}
+                              title="embed"
+                              src={
+                                post.RepostedPostEntryResponse.PostExtraData
+                                  .EmbedVideoURL
+                              }
+                            />
+                          </Group>
+                        )}
                         {post.RepostedPostEntryResponse.ImageURLs &&
                           post.RepostedPostEntryResponse.ImageURLs.length >
                             0 && (
@@ -568,8 +597,6 @@ export const Profile = () => {
                           )}
                       </Paper>
                     )}
-
-                  
 
                     <Space h="md" />
 
@@ -825,16 +852,35 @@ export const Profile = () => {
             labelPosition="center"
           />
           <Space h="xl" />
-          <Center>
-            <Badge
-              size="md"
-              radius="sm"
-              variant="gradient"
-              gradient={{ from: "indigo", to: "cyan", deg: 45 }}
-            >
-              Please login to view your Profile.
-            </Badge>
-          </Center>
+          <Container size="30rem" px={0}>
+            <Paper shadow="xl" p="lg" withBorder>
+              <Center>
+                <Text c="dimmed" fw={700}>
+                  Please Sign Up or Login to view your Profile.
+                </Text>
+              </Center>
+              <Space h="md" />
+              <Center>
+                <Button
+                  fullWidth
+                  leftIcon={<GiWaveCrest size="1rem" />}
+                  variant="gradient"
+                  gradient={{ from: "cyan", to: "indigo" }}
+                  onClick={() => identity.login()}
+                >
+                  Sign Up
+                </Button>
+                <Space w="xs" />
+                <Button
+                  fullWidth
+                  variant="default"
+                  onClick={() => identity.login()}
+                >
+                  Login
+                </Button>
+              </Center>
+            </Paper>
+          </Container>
         </>
       )}
     </>

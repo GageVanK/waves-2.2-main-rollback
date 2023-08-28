@@ -220,7 +220,7 @@ export const MantineHeader = () => {
                     ) : (
                       <>
                         <Search />
-                        {!currentUser && !alternateUsers?.length && (
+                        {!currentUser && (!alternateUsers || alternateUsers.length === 0) && (
                           <>
                             <Button
                               variant="default"
