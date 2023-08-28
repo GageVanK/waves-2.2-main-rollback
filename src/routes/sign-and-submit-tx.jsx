@@ -3,8 +3,17 @@ import {
   identity,
   submitPost,
   getSingleProfile,
+  uploadImage,
 } from "deso-protocol";
-import { useContext, useRef, useState } from "react";
+import {
+  useContext,
+  useRef,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react";
+import { RiImageAddFill } from "react-icons/ri";
 
 import {
   Button,
@@ -20,17 +29,47 @@ import {
   Tooltip,
   Badge,
   TextInput,
+  FileButton,
+  ActionIcon,
+  Image,
 } from "@mantine/core";
 import { getDisplayName } from "../helpers";
 import { DeSoIdentityContext } from "react-deso-protocol";
 import { Welcome } from "../components/Welcome";
+import { useCreateAsset, useAssetMetrics, Player } from "@livepeer/react";
+import { Asset } from "../components/VideoUpload";
+import { useDropzone } from "react-dropzone";
 import { IconCheck } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
+
 export const SignAndSubmitTx = () => {
   const { currentUser, isLoading } = useContext(DeSoIdentityContext);
   const [newUsername, setNewUsername] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [imageFile, setImageFile] = useState(null);
+  const [imageURL, setImageURL] = useState("");
+
+  const handleUploadImage = async () => {
+    try {
+      const response = await uploadImage({
+        UserPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
+        file: imageFile,
+      });
+
+      setImageURL(response.ImageURL);
+      console.log(response);
+    } catch (error) {
+      console.log("Something happened: " + error);
+    }
+  };
+
+  useEffect(() => {
+    if (imageFile) {
+      handleUploadImage(); // Automatically trigger upload when imageFile is set
+    }
+  }, [imageFile]); // This effect runs whenever imageFile changes
+
   const handleUpdateUsername = async () => {
     try {
       await updateProfile({
@@ -214,7 +253,7 @@ export const SignAndSubmitTx = () => {
                       currentUser.PublicKeyBase58Check,
                     BodyObj: {
                       Body: body,
-                      ImageURLs: [],
+                      ImageURLs: imageURL ? [imageURL] : [],
                       VideoURLs: [],
                     },
                   }).then((resp) => {
@@ -251,6 +290,18 @@ export const SignAndSubmitTx = () => {
                   size="md"
                 />
                 <Space h="sm" />
+                {imageURL && (
+                  <div>
+                    <p>Uploaded Image:</p>
+                    <Image
+                      src={imageURL}
+                      alt="Uploaded"
+                      maw={240}
+                      mx="auto"
+                      radius="md"
+                    />
+                  </div>
+                )}
                 <Group postion="apart">
                   <Button
                     variant="gradient"
@@ -260,6 +311,24 @@ export const SignAndSubmitTx = () => {
                   >
                     Create
                   </Button>
+
+                  <FileButton
+                    onChange={setImageFile}
+                    accept="image/png,image/jpeg"
+                  >
+                    {(props) => (
+                      <Tooltip label="Upload Image">
+                        <ActionIcon
+                          color="blue"
+                          size="lg"
+                          variant="default"
+                          {...props}
+                        >
+                          <RiImageAddFill size="1.2rem" />
+                        </ActionIcon>
+                      </Tooltip>
+                    )}
+                  </FileButton>
                 </Group>
               </form>
             </Paper>
