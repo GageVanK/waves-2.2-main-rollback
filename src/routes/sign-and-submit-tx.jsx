@@ -394,6 +394,7 @@ export const SignAndSubmitTx = () => {
                       </Tooltip>
                     )}
                   </FileButton>
+                  <Tooltip label="Upload Video">
                   <ActionIcon
                     color="blue"
                     size="lg"
@@ -402,6 +403,7 @@ export const SignAndSubmitTx = () => {
                   >
                     <TbVideoPlus size="1.2rem" />
                   </ActionIcon>
+                  </Tooltip>
                   <Collapse in={opened}>
                     <div style={{ maxWidth: "100%" }}>
                       <Divider my="sm" />

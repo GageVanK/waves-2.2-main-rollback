@@ -580,7 +580,7 @@ export const Wave = () => {
             <Player
               playbackId={profile.ExtraData?.WavesStreamPlaybackId}
               title={profile.ExtraData?.WavesStreamTitle}
-              autoPlay
+              
             />
           ) : (
             <Divider

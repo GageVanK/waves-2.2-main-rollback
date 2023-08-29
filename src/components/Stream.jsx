@@ -343,7 +343,7 @@ export const Stream = () => {
                     <Player
                       title={stream?.name}
                       playbackId={stream?.playbackId}
-                      autoPlay
+                      
                       muted
                     />
                   </Group>
@@ -499,7 +499,7 @@ export const Stream = () => {
                     <Broadcast
                       title={stream?.name}
                       streamKey={stream.streamKey}
-                      autoPlay
+                      
                       muted
                     />
                   </Group>
