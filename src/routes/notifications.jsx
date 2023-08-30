@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { useState, useContext, useEffect } from "react";
 import { DeSoIdentityContext } from "react-deso-protocol";
-import { getNotifications, getSingleProfile, identity } from "deso-protocol";
+import { getNotifications, getSingleProfile, identity, setNotificationMetadata, getUnreadNotificationsCount } from "deso-protocol";
 import { useNavigate } from "react-router";
 import { GiWaveCrest } from "react-icons/gi";
 import {
@@ -25,6 +25,7 @@ import {
   IconRecycle,
   IconAt,
   IconCoin,
+  IconThumbUp
 } from "@tabler/icons-react";
 
 const useStyles = createStyles((theme) => ({
@@ -67,9 +68,12 @@ export const NotificationsPage = () => {
             };
           })
         );
+        
+    
 
         setNotifications(updatedNotifications);
-        console.log(updatedNotifications);
+      console.log(updatedNotifications)
+ 
       } catch (error) {
         console.error("Error fetching user notifications:", error);
       }
@@ -78,7 +82,9 @@ export const NotificationsPage = () => {
     if (currentUser) {
       fetchNotifications();
     }
-  }, [currentUser, userPublicKey]);
+  }, []);
+
+ 
 
   return (
     <div>
@@ -126,6 +132,59 @@ export const NotificationsPage = () => {
                         </div>
                       </Group>
                     </UnstyledButton>
+
+
+                    {notification.Metadata.TxnType === "CREATE_POST_ASSOCIATION" && notification.Metadata.CreatePostAssociationTxindexMetadata.AssociationValue === "LIKE" && (
+                      <>
+                        <div>
+                          <IconThumbUp />
+                        </div>
+                        <Text weight="bold" size="sm">
+                          Liked your
+                        </Text>
+
+                        <Group position="right">
+                          <UnstyledButton
+                            onClick={() => {
+                              navigate(
+                                `/post/${notification.Metadata.LikeTxindexMetadata.PostHashHex}`
+                              );
+                            }}
+                            variant="transparent"
+                          >
+                            <Text weight="bold" size="sm">
+                              Post
+                            </Text>
+                          </UnstyledButton>
+                        </Group>
+                      </>
+                    )}
+
+{notification.Metadata.TxnType === "CREATE_POST_ASSOCIATION" && notification.Metadata.CreatePostAssociationTxindexMetadata.AssociationValue === "Heart" && (
+                      <>
+                        <div>
+                          <IconHeart />
+                        </div>
+                        <Text weight="bold" size="sm">
+                          Loved your
+                        </Text>
+
+                        <Group position="right">
+                          <UnstyledButton
+                            onClick={() => {
+                              navigate(
+                                `/post/${notification.Metadata.LikeTxindexMetadata.PostHashHex}`
+                              );
+                            }}
+                            variant="transparent"
+                          >
+                            <Text weight="bold" size="sm">
+                              Post
+                            </Text>
+                          </UnstyledButton>
+                        </Group>
+                      </>
+                    )}
 
                     {notification.Metadata.TxnType === "LIKE" && (
                       <>
