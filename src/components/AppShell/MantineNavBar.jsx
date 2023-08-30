@@ -234,16 +234,7 @@ export function MantineNavBar() {
     setFollowingWaves(followingPosts);
   };
 
-  // Fetch the followingPosts when the currentUser changes
-  useEffect(() => {
-    if (currentUser) {
-      fetchFollowingPosts();
-      
-    }
-  }, [currentUser]);
-
   
-
   const fetchUnreadNotifications = async () => {
     const notifData = await getUnreadNotificationsCount({
       PublicKeyBase58Check: currentUser.PublicKeyBase58Check,
@@ -253,15 +244,19 @@ export function MantineNavBar() {
     setUnreadNotifs(notifData.NotificationsCount)
   };
 
-   // Fetch the followingPosts when the currentUser changes
-   useEffect(() => {
+  // Fetch the followingPosts when the currentUser changes
+  useEffect(() => {
     if (currentUser) {
-     
+      fetchFollowingPosts();
       fetchUnreadNotifications();
     }
-  }, []);
+  }, [currentUser]);
 
+  
+
+ 
   const resetUnreadNotifications = async () => {
+   
     const notifData = await getUnreadNotificationsCount({
       PublicKeyBase58Check: currentUser.PublicKeyBase58Check,
     });
@@ -271,7 +266,8 @@ export function MantineNavBar() {
       LastUnreadNotificationIndex:  notifData.LastUnreadNotificationIndex
     });
 
-    fetchUnreadNotifications();
+    setUnreadNotifs(0)
+
   };
 
   const links = mainLinksMockdata.map((link) => (
@@ -286,9 +282,7 @@ export function MantineNavBar() {
             <UnstyledButton
       onClick={() => {
         setActive(link.label);
-        if (link.label === 'Notifications' && unreadNotifs > 0) {
-          resetUnreadNotifications(); // Call the reset function here
-        }
+        resetUnreadNotifications()
       }}
         to={link.link}
         component={Link}

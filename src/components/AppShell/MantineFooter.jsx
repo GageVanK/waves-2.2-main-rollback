@@ -6,8 +6,9 @@ import {
   ActionIcon,
   Group,
   getStylesRef,
+  Text
 } from "@mantine/core";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   IconBellRinging,
   IconUser,
@@ -19,6 +20,11 @@ import { RxCardStackPlus } from "react-icons/rx";
 import { SignAndSubmitTx } from "../../routes/sign-and-submit-tx";
 import { useNavigate } from "react-router-dom";
 import { DeSoIdentityContext } from "react-deso-protocol";
+import {
+  getUnreadNotificationsCount,
+ 
+  setNotificationMetadata
+} from "deso-protocol";
 
 const useStyles = createStyles((theme) => ({
   footer: {
@@ -87,6 +93,36 @@ export const MantineFooter = () => {
   const navigate = useNavigate();
   const [active, setActive] = useState("Home");
   const { classes, cx } = useStyles();
+const [unreadNotifs, setUnreadNotifs] = useState(0);
+ const fetchUnreadNotifications = async () => {
+    const notifData = await getUnreadNotificationsCount({
+      PublicKeyBase58Check: currentUser.PublicKeyBase58Check,
+    });
+
+    console.log(notifData);
+    setUnreadNotifs(notifData.NotificationsCount)
+  };
+
+   // Fetch the followingPosts when the currentUser changes
+   useEffect(() => {
+    if (currentUser) {
+     
+      fetchUnreadNotifications();
+    }
+  }, [currentUser]);
+
+  const resetUnreadNotifications = async () => {
+    const notifData = await getUnreadNotificationsCount({
+      PublicKeyBase58Check: currentUser.PublicKeyBase58Check,
+    });
+    await setNotificationMetadata({
+      PublicKeyBase58Check: currentUser.PublicKeyBase58Check,
+      UnreadNotifications: 0,
+      LastUnreadNotificationIndex:  notifData.LastUnreadNotificationIndex
+    });
+
+    setUnreadNotifs(0)
+  };
 
   return (
     <>
@@ -163,8 +199,12 @@ export const MantineFooter = () => {
             onClick={() => {
               setActive("/notifications");
               navigate("/notifications");
+              resetUnreadNotifications()
             }}
           >
+             { unreadNotifs > 0 && (
+          <Text  className={classes.notificationCount} fz="sm" fw={700} c="orange">{unreadNotifs}</Text>
+        )}
             <IconBellRinging size="1.4rem" className={classes.actionIcon} />
           </ActionIcon>
         </Group>
