@@ -33,6 +33,7 @@ import {
   getUnreadNotificationsCount,
   getFollowersForUser,
   getIsFollowing,
+  setNotificationMetadata
 } from "deso-protocol";
 import { RiArrowRightSFill, RiArrowLeftSFill } from "react-icons/ri";
 import { RxDotFilled } from "react-icons/rx";
@@ -184,6 +185,7 @@ export function MantineNavBar() {
   const [open] = useState(false);
   const [wavesSidebar, setWavesSidebar] = useState([]);
   const [followingWaves, setFollowingWaves] = useState([]);
+  const [unreadNotifs, setUnreadNotifs] = useState(0);
   const { currentUser, isLoading } = useContext(DeSoIdentityContext);
   const [opened, { toggle }] = useDisclosure(true);
   useEffect(() => {
@@ -236,9 +238,11 @@ export function MantineNavBar() {
   useEffect(() => {
     if (currentUser) {
       fetchFollowingPosts();
-      fetchUnreadNotifications();
+      
     }
   }, [currentUser]);
+
+  
 
   const fetchUnreadNotifications = async () => {
     const notifData = await getUnreadNotificationsCount({
@@ -246,6 +250,28 @@ export function MantineNavBar() {
     });
 
     console.log(notifData);
+    setUnreadNotifs(notifData.NotificationsCount)
+  };
+
+   // Fetch the followingPosts when the currentUser changes
+   useEffect(() => {
+    if (currentUser) {
+     
+      fetchUnreadNotifications();
+    }
+  }, []);
+
+  const resetUnreadNotifications = async () => {
+    const notifData = await getUnreadNotificationsCount({
+      PublicKeyBase58Check: currentUser.PublicKeyBase58Check,
+    });
+    await setNotificationMetadata({
+      PublicKeyBase58Check: currentUser.PublicKeyBase58Check,
+      UnreadNotifications: 0,
+      LastUnreadNotificationIndex:  notifData.LastUnreadNotificationIndex
+    });
+
+    fetchUnreadNotifications();
   };
 
   const links = mainLinksMockdata.map((link) => (
@@ -257,16 +283,24 @@ export function MantineNavBar() {
         transitionProps={{ duration: 0 }}
         key={link.label}
       >
-        <UnstyledButton
-          onClick={() => setActive(link.label)}
-          to={link.link}
-          component={Link}
-          className={cx(classes.mainLink, {
-            [classes.mainLinkActive]: link.label === active,
-          })}
-        >
-          <link.icon size="1.4rem" stroke={1.5} />
-        </UnstyledButton>
+            <UnstyledButton
+      onClick={() => {
+        setActive(link.label);
+        if (link.label === 'Notifications' && unreadNotifs > 0) {
+          resetUnreadNotifications(); // Call the reset function here
+        }
+      }}
+        to={link.link}
+        component={Link}
+        className={cx(classes.mainLink, {
+          [classes.mainLinkActive]: link.label === active,
+        })}
+      >
+        {link.icon && <link.icon size="1.4rem" stroke={1.5} />}
+        {link.label === 'Notifications' && unreadNotifs > 0 && (
+          <Text  className={classes.notificationCount} fz="sm" fw={700} c="orange">{unreadNotifs}</Text>
+        )}
+      </UnstyledButton>
       </Tooltip>
       <Space h="xs" />
     </>

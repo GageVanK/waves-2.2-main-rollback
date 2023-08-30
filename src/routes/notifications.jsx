@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { useState, useContext, useEffect } from "react";
 import { DeSoIdentityContext } from "react-deso-protocol";
-import { getNotifications, getSingleProfile, identity } from "deso-protocol";
+import { getNotifications, getSingleProfile, identity, setNotificationMetadata, getUnreadNotificationsCount } from "deso-protocol";
 import { useNavigate } from "react-router";
 import { GiWaveCrest } from "react-icons/gi";
 import {
@@ -67,9 +67,12 @@ export const NotificationsPage = () => {
             };
           })
         );
+        
+    
 
         setNotifications(updatedNotifications);
-        console.log(updatedNotifications);
+      
+ 
       } catch (error) {
         console.error("Error fetching user notifications:", error);
       }
@@ -78,7 +81,9 @@ export const NotificationsPage = () => {
     if (currentUser) {
       fetchNotifications();
     }
-  }, [currentUser, userPublicKey]);
+  }, []);
+
+ 
 
   return (
     <div>
