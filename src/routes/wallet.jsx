@@ -87,7 +87,7 @@ useEffect(() => {
                 alt="Profile Picture"
               />
       <Text fw={700} c='dimmed'> {currentUser.ProfileEntryResponse.Username}'s Wallet</Text>
-           <CopyButton value="https://mantine.dev" timeout={2000}>
+           <CopyButton value={currentUser.PublicKeyBase58Check} timeout={2000}>
       {({ copied, copy }) => (
         <Tooltip label={copied ? 'Copied' : 'Copy Your Public Key'} withArrow position="right">
           <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
