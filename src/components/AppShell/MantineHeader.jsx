@@ -21,6 +21,7 @@ import {
   UnstyledButton,
   Space,
   Image,
+  Badge
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { GiWaveCrest } from "react-icons/gi";
@@ -202,7 +203,7 @@ export const MantineHeader = () => {
                   <UnstyledButton to="/" component={Link}>
                     <Group>
                       <Text
-                        fz="lg"
+                        fz="xl"
                         fw={1000}
                         inherit
                         variant="gradient"
@@ -210,7 +211,7 @@ export const MantineHeader = () => {
                       >
                         Waves
                       </Text>
-                   
+                   <Badge size="xs" radius="xs" variant="filled">BETA</Badge>
                     </Group>
                   </UnstyledButton>
 
@@ -338,15 +339,20 @@ export const MantineHeader = () => {
                 size="77%"
                 padding="md"
                 title={
-                  <Text
-                    fz="lg"
-                    fw={1000}
-                    inherit
-                    variant="gradient"
-                    component="span"
-                  >
-                    Waves
-                  </Text>
+                  <>
+                  <Group>
+                   <Text
+                        fz="xl"
+                        fw={1000}
+                        inherit
+                        variant="gradient"
+                        component="span"
+                      >
+                        Waves
+                      </Text>
+                   <Badge size="xs" radius="xs" variant="filled">BETA</Badge>
+                   </Group>
+                   </>
                 }
                 className={classes.hiddenDesktop}
                 zIndex={1000000}
