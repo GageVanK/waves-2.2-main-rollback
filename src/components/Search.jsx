@@ -4,6 +4,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import { getSingleProfile } from "deso-protocol";
 import { useNavigate } from "react-router";
+import { TbUserSearch } from 'react-icons/tb';
 
 export const Search = (props: TextInputProps) => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -69,9 +70,9 @@ export const Search = (props: TextInputProps) => {
               SearchUser();
             }} size={32} radius="xl" color={theme.primaryColor} variant="light">
               {theme.dir === 'ltr' ? (
-                <IconSearch size="1.1rem" stroke={1.5} />
+                <TbUserSearch size="1.1rem"  />
               ) : (
-                <IconSearch size="1.1rem" stroke={1.5} />
+                <TbUserSearch size="1.1rem" />
               )}
             </ActionIcon>
           }
