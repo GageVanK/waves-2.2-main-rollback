@@ -1,16 +1,16 @@
-import { ActionIcon, Modal, Button, TextInput, Space } from "@mantine/core";
+import { ActionIcon, Modal, Button, TextInput, Space, useMantineTheme } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import { getSingleProfile } from "deso-protocol";
 import { useNavigate } from "react-router";
 
-export const Search = () => {
+export const Search = (props: TextInputProps) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [value, setValue] = useState("");
   const [userNotFound, setuserNotFound] = useState("");
   const navigate = useNavigate();
-
+  const theme = useMantineTheme();
   const SearchUser = async () => {
     const request = {
       Username: value,
@@ -57,28 +57,31 @@ export const Search = () => {
         <TextInput
           value={value}
           onChange={(event) => setValue(event.currentTarget.value)}
-          icon={<IconSearch size="0.8rem" />}
+          radius="xl"
+      size="md"
           placeholder="Enter Username"
           variant="filled"
           error={userNotFound ? userNotFound : null}
           withAsterisk
+          rightSection={
+            <ActionIcon onClick={() => {
+              SearchUser();
+            }} size={32} radius="xl" color={theme.primaryColor} variant="light">
+              {theme.dir === 'ltr' ? (
+                <IconSearch size="1.1rem" stroke={1.5} />
+              ) : (
+                <IconSearch size="1.1rem" stroke={1.5} />
+              )}
+            </ActionIcon>
+          }
+          rightSectionWidth={42}
+          {...props}
         />
 
-        <Space h="sm" />
-        <Button
-          onClick={() => {
-            SearchUser();
-          }}
-          variant="light"
-          color="blue"
-          radius="xl"
-          size="xs"
-        >
-          Search
-        </Button>
+        
       </Modal>
 
-      <ActionIcon onClick={open} color="blue" size="lg" variant="light">
+      <ActionIcon onClick={open} color="blue" size="lg" radius="xl" variant="light">
         <IconSearch size="1.3rem" />
       </ActionIcon>
     </>
