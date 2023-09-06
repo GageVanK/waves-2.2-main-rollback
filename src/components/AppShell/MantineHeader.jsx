@@ -322,7 +322,7 @@ export const MantineHeader = () => {
                   </Group>
 
                   <Group position="right" className={classes.hiddenDesktop}>
-                    <Search />
+                   
 
                     <Burger
                       opened={drawerOpened}
@@ -362,7 +362,11 @@ export const MantineHeader = () => {
                     my="sm"
                     color={theme.colorScheme === "dark" ? "dark.5" : "gray.1"}
                   />
-
+ <Search />
+  <Divider
+                    my="sm"
+                    color={theme.colorScheme === "dark" ? "dark.5" : "gray.1"}
+                  />
                   {links}
                   <Divider
                     my="sm"
