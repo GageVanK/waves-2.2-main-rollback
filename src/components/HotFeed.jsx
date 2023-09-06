@@ -280,20 +280,19 @@ export const HotFeed = () => {
 
                 <Space h="md" />
                 {post.PostExtraData?.EmbedVideoURL && (
-                  <Group
-                    style={{
-                      height: "750px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <iframe
-                      style={{
-                        height: "100%",
-                        border: "none",
-                        borderRadius: "8px",
-                      }}
+                  <Group  style={{
+                   
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}>
+                        <iframe
+                          style={{
+                            height: "50vh",
+                            width: "100vw",
+                            border: "none",
+                            borderRadius: "22px",
+                          }}
                       title="embed"
                       src={post.PostExtraData.EmbedVideoURL}
                     />
@@ -418,19 +417,18 @@ export const HotFeed = () => {
                     <Space h="md" />
                     {post.RepostedPostEntryResponse.PostExtraData
                       ?.EmbedVideoURL && (
-                      <Group
-                        style={{
-                          height: "750px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
+                       <Group  style={{
+                   
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}>
                         <iframe
                           style={{
-                            height: "100%",
+                            height: "50vh",
+                            width: "100vw",
                             border: "none",
-                            borderRadius: "8px",
+                            borderRadius: "22px",
                           }}
                           title="embed"
                           src={

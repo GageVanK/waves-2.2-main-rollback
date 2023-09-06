@@ -277,9 +277,19 @@ export const PostPage = () => {
                 )}
         {singlePost.PostExtraData?.EmbedVideoURL && (
           
-          <Group style={{ height: "750px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-  
-  <iframe style={{ height: "100%", border: "none", borderRadius: "8px" }} title="embed" src={singlePost.PostExtraData.EmbedVideoURL} />
+          <Group  style={{
+                   
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}>
+                        <iframe
+                          style={{
+                            height: "50vh",
+                            width: "100vw",
+                            border: "none",
+                            borderRadius: "22px",
+                          }} title="embed" src={singlePost.PostExtraData.EmbedVideoURL} />
 </Group>
 
 
