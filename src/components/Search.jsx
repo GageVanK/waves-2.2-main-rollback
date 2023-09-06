@@ -1,4 +1,4 @@
-import { ActionIcon, Modal, Button, TextInput, Space, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Modal, Button, TextInput, Space, useMantineTheme, Text } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router";
 export const Search = (props: TextInputProps) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [value, setValue] = useState("");
-  const [userNotFound, setuserNotFound] = useState("");
+  const [userNotFound, setuserNotFound] = useState(false);
   const navigate = useNavigate();
   const theme = useMantineTheme();
   const SearchUser = async () => {
@@ -20,7 +20,7 @@ export const Search = (props: TextInputProps) => {
     const response = await getSingleProfile(request);
 
     if (response === null) {
-      setuserNotFound("User not found");
+      setuserNotFound(true);
       return;
     }
 
@@ -44,7 +44,7 @@ export const Search = (props: TextInputProps) => {
           : null,
     };
 
-    close();
+    setuserNotFound(false)
 
     navigate(`/wave/${response.Profile.Username}`, {
       state,
@@ -53,16 +53,17 @@ export const Search = (props: TextInputProps) => {
 
   return (
     <>
-      <Modal opened={opened} onClose={close} title="Search User">
+      
         <TextInput
           value={value}
           onChange={(event) => setValue(event.currentTarget.value)}
           radius="xl"
       size="md"
-          placeholder="Enter Username"
+          placeholder="Search DeSo Username"
           variant="filled"
           error={userNotFound ? userNotFound : null}
           withAsterisk
+        
           rightSection={
             <ActionIcon onClick={() => {
               SearchUser();
@@ -79,11 +80,7 @@ export const Search = (props: TextInputProps) => {
         />
 
         
-      </Modal>
-
-      <ActionIcon onClick={open} color="blue" size="lg" radius="xl" variant="light">
-        <IconSearch size="1.3rem" />
-      </ActionIcon>
+   
     </>
   );
 };
