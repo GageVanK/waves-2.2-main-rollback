@@ -215,8 +215,8 @@ export const FollowerFeed = () => {
       await createPostAssociation({
         TransactorPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
         PostHashHex: postHash,
-        AssociationType: "Reaction",
-        AssociationValue: "Heart",
+        AssociationType: "REACTION",
+        AssociationValue: "LOVE",
         MinFeeRateNanosPerKB: 1000,
       });
       setHeartSuccess(true);
@@ -420,9 +420,19 @@ export const FollowerFeed = () => {
                 <Space h="md" />
                 {post.PostExtraData?.EmbedVideoURL && (
           
-          <Group style={{ height: "750px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-  
-  <iframe style={{ height: "100%", border: "none", borderRadius: "8px" }} title="embed" src={post.PostExtraData.EmbedVideoURL} />
+          <Group  style={{
+                   
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}>
+                        <iframe
+                          style={{
+                            height: "50vh",
+                            width: "100vw",
+                            border: "none",
+                            borderRadius: "22px",
+                          }} title="embed" src={post.PostExtraData.EmbedVideoURL} />
 </Group>
 
 
@@ -545,9 +555,19 @@ export const FollowerFeed = () => {
                     <Space h="md" />
                     {post.RepostedPostEntryResponse.PostExtraData?.EmbedVideoURL && (
           
-          <Group style={{ height: "750px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-  
-  <iframe style={{ height: "100%", border: "none", borderRadius: "8px" }} title="embed" src={post.RepostedPostEntryResponse.PostExtraData.EmbedVideoURL} />
+           <Group  style={{
+                   
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}>
+                        <iframe
+                          style={{
+                            height: "50vh",
+                            width: "100vw",
+                            border: "none",
+                            borderRadius: "22px",
+                          }} title="embed" src={post.RepostedPostEntryResponse.PostExtraData.EmbedVideoURL} />
 </Group>
 
 
