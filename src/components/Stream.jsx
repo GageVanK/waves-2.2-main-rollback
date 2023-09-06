@@ -137,13 +137,14 @@ export const Stream = () => {
       console.log("something happened: " + error);
     }
   };
-
+console.log(stream)
   const { mutate: recordStream } = useUpdateStream({
     streamId,
     record: true,
   });
   const handleEnableRecording = async () => {
     recordStream?.()
+    console.log(recordStream)
   };
   const [isRecordingEnabled, setIsRecordingEnabled] = useState(false); 
 
@@ -411,24 +412,7 @@ export const Stream = () => {
                       </Group>
                      
                       <Divider my="sm" />
-                      <Space h="md" />
-                              <Switch
-      labelPosition="left"
-      label="Would you like to Record this Stream:"
-      description="Make sure to select before your Stream is Active"
-      onLabel="ON" offLabel="OFF"
-      size="lg"
-      isChecked={isRecordingEnabled}
-      disabled={isRecordingEnabled} // Disable the switch if recording is enabled
-      onChange={(isChecked) => {
-        if (isChecked) {
-          handleEnableRecording();
-          setIsRecordingEnabled(true); // Update state to indicate recording is enabled
-        }
-      }}
-    />
-      <Space h="md" />
-      <Divider my="sm" />
+                  
      
       
                       <Group position="center">
@@ -835,25 +819,7 @@ export const Stream = () => {
                       </Group>
                      
                       <Divider my="sm" />
-                      <Space h="md" />
-                <Switch
-      labelPosition="left"
-      label="Would you like to Record this Stream:"
-      description="Make sure to select before your Stream is Active"
-      onLabel="ON" offLabel="OFF"
-      size="lg"
-      isChecked={isRecordingEnabled}
-      disabled={isRecordingEnabled} // Disable the switch if recording is enabled
-      onChange={(isChecked) => {
-        if (isChecked) {
-          handleEnableRecording();
-          setIsRecordingEnabled(true); // Update state to indicate recording is enabled
-        }
-      }}
-    />
-    <Space h="md" />
-       <Divider my="sm" />
-                      <Space h="md" />
+                 
       
                       <Group position="center">
                         <Button
