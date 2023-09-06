@@ -150,8 +150,8 @@ export const HotFeed = () => {
       await createPostAssociation({
         TransactorPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
         PostHashHex: postHash,
-        AssociationType: "Reaction",
-        AssociationValue: "Heart",
+        AssociationType: "REACTION",
+        AssociationValue: "LOVE",
         MinFeeRateNanosPerKB: 1000,
       });
       setHeartSuccess(true);

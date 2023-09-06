@@ -160,7 +160,7 @@ export const NotificationsPage = () => {
                       </>
                     )}
 
-{notification.Metadata.TxnType === "CREATE_POST_ASSOCIATION" && notification.Metadata.CreatePostAssociationTxindexMetadata.AssociationValue === "Heart" && (
+{notification.Metadata.TxnType === "CREATE_POST_ASSOCIATION" && notification.Metadata.CreatePostAssociationTxindexMetadata.AssociationValue === "LOVE" && (
                       <>
                         <div>
                           <IconHeart />
@@ -173,7 +173,7 @@ export const NotificationsPage = () => {
                           <UnstyledButton
                             onClick={() => {
                               navigate(
-                                `/post/${notification.Metadata.LikeTxindexMetadata.PostHashHex}`
+                                `/post/${notification.Metadata.CreatePostAssociationTxindexMetadata.PostHashHex}`
                               );
                             }}
                             variant="transparent"
@@ -199,7 +199,7 @@ export const NotificationsPage = () => {
                           <UnstyledButton
                             onClick={() => {
                               navigate(
-                                `/post/${notification.Metadata.LikeTxindexMetadata.PostHashHex}`
+                                `/post/${notification.Metadata.CreatePostAssociationTxindexMetadata.PostHashHex}`
                               );
                             }}
                             variant="transparent"
