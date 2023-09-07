@@ -147,7 +147,7 @@ export const NotificationsPage = () => {
                           <UnstyledButton
                             onClick={() => {
                               navigate(
-                                `/post/${notification.Metadata.LikeTxindexMetadata.PostHashHex}`
+                                `/post/${notification.Metadata.CreatePostAssociationTxindexMetadata.PostHashHex}`
                               );
                             }}
                             variant="transparent"
@@ -199,7 +199,7 @@ export const NotificationsPage = () => {
                           <UnstyledButton
                             onClick={() => {
                               navigate(
-                                `/post/${notification.Metadata.CreatePostAssociationTxindexMetadata.PostHashHex}`
+                                `/post/${notification.Metadata.LikeTxindexMetadata.PostHashHex}`
                               );
                             }}
                             variant="transparent"
