@@ -1,5 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
+import Surf from "../assets/surfing.png"
+import surf2 from "../assets/waves.png"
 import { Player } from "@livepeer/react";
 import {
   IconHeart,
@@ -32,6 +34,7 @@ import {
 import {
   Grid,
   Container,
+  ThemeIcon,
   CopyButton,
   Box,
   Overlay,
@@ -58,14 +61,15 @@ import {
   Collapse,
   UnstyledButton,
   List,
-  HoverCard 
+  HoverCard,
+  BackgroundImage
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { DeSoIdentityContext } from "react-deso-protocol";
 import { RiUserUnfollowLine } from "react-icons/ri";
 import { useDisclosure } from "@mantine/hooks";
 import { GiWaveSurfer } from "react-icons/gi";
-
+import { TiInfoLargeOutline } from 'react-icons/ti';
 const useStyles = createStyles((theme) => ({
   comment: {
     padding: `${theme.spacing.lg}px ${theme.spacing.xl}px`,
@@ -646,18 +650,24 @@ export const Wave = () => {
               transitionProps={{ transition: "fade" }}
             >
               <Paper shadow="xl" p="xl" withBorder>
-              <Center>
-                  <GiWaveSurfer size="3rem" />
-                </Center>
+             
                 <Space h="xs" />
                 <Text fz="xl" fw={700} c="dimmed" align="center" variant="gradient"
       gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}>
                   {" "}
-                  Join {userName}'s Wave and Subscribe to contribute to their
-                  growth.
+                  Join {userName}'s Wave
+                </Text>
+                <Text fz="xl" fw={700} c="dimmed" align="center" variant="gradient"
+      gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}>
+                  {" "}
+                  Subscribe to contribute to their
+                  growth
                 </Text>
                 <Space h="md" />
-                
+                <Center>
+                    <a href="https://www.flaticon.com/free-icons/swell" title="swell icons">
+              <Image  maw={111} mx="auto" radius="md" src={Surf} alt="Random image" /></a>
+                </Center>
                 <Space h="md" />
                 <Center>
                   <Box>
@@ -701,18 +711,36 @@ export const Wave = () => {
                           </Center>
                           <Space h="md" />
                           <Collapse in={openedSub1}>
+                         
                           <Paper shadow="xl" radius="xl" p="xl" withBorder>
-                            <Text fz="sm" fz="sm" fw={500}>Confirm Purchase</Text>
+                          
+                            <Center>
+                            <Text fz="sm"  fw={500}>Confirm Purchase</Text>
+                          
+                       
+                            </Center>
                             <Divider my="sm" />
+                         
+                           
+                            <Center>
                             <Button
                               onClick={subTier1}
                               variant="light"
                               radius="md"
-                              
+                              fullWidth
                               leftIcon={<IconHeartHandshake size="1.5rem"  />}
                             >
                               Subscribe
                             </Button>
+                             </Center>
+                             <Space h="xs" />
+                             
+                            <Text align="center" fz="xs"  fw={500} c="dimmed"><ThemeIcon radius="xl" size={14} variant="outline">
+                             <TiInfoLargeOutline    />
+    </ThemeIcon> This will instantly be paid out to {`${userName}`}</Text>
+                          
+                       
+                           
                             </Paper>
                         </Collapse>
                         </Paper>
@@ -753,8 +781,12 @@ export const Wave = () => {
                           <Space h="md" />
                           <Collapse in={openedSub2}>
                           <Paper shadow="xl" radius="xl" p="xl" withBorder>
+                             <Center>
                             <Text fz="sm" fz="sm" fw={500}>Confirm Purchase</Text>
+                            </Center>
                             <Divider my="sm" />
+                        
+                            <Center>
                             <Button
                               onClick={subTier2}
                               variant="light"
@@ -763,6 +795,13 @@ export const Wave = () => {
                             >
                               Subscribe
                             </Button>
+                             </Center>
+                             <Space h="xs" />
+                             
+                             <Text align="center" fz="xs"  fw={500} c="dimmed"><ThemeIcon radius="xl" size={14} variant="outline">
+                              <TiInfoLargeOutline    />
+     </ThemeIcon> This will instantly be paid out to {`${userName}`}</Text>
+                           
                             </Paper>
                         </Collapse>
                         </Paper>
@@ -803,8 +842,12 @@ export const Wave = () => {
                           <Space h="md" />
                           <Collapse in={openedSub3}>
                           <Paper shadow="xl"  radius="xl" p="xl" withBorder>
+                             <Center>
                             <Text fz="sm" fz="sm" fw={500}>Confirm Purchase</Text>
+                            </Center>
                             <Divider my="sm" />
+                        
+                            <Center>
                             <Button
                               onClick={subTier3}
                               variant="light"
@@ -813,11 +856,21 @@ export const Wave = () => {
                             >
                               Subscribe
                             </Button>
+                             </Center>
+                             <Space h="xs" />
+                             
+                             <Text align="center" fz="xs"  fw={500} c="dimmed"><ThemeIcon radius="xl" size={14} variant="outline">
+                              <TiInfoLargeOutline    />
+     </ThemeIcon> This will instantly be paid out to {`${userName}`}</Text>
+                           
                             </Paper>
                         </Collapse>
+
+                        
                         </Paper>
                       </Grid.Col>
                     </Grid>
+                    
                     {currentUser &&
                       profile &&
                       currentUser.PublicKeyBase58Check ===
