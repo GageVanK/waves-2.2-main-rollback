@@ -5,6 +5,7 @@ import { useState } from "react";
 import { getSingleProfile } from "deso-protocol";
 import { useNavigate } from "react-router";
 import { TbUserSearch } from 'react-icons/tb';
+import { BiSearchAlt } from 'react-icons/bi';
 
 export const Search = (props: TextInputProps) => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -64,7 +65,7 @@ export const Search = (props: TextInputProps) => {
           variant="filled"
           error={userNotFound ? userNotFound : null}
           withAsterisk
-        
+        icon={<BiSearchAlt size="1rem" />}
           rightSection={
             <ActionIcon onClick={() => {
               SearchUser();
