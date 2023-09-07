@@ -58,11 +58,13 @@ import {
   Collapse,
   UnstyledButton,
   List,
+  HoverCard 
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { DeSoIdentityContext } from "react-deso-protocol";
 import { RiUserUnfollowLine } from "react-icons/ri";
 import { useDisclosure } from "@mantine/hooks";
+import { GiWaveSurfer } from "react-icons/gi";
 
 const useStyles = createStyles((theme) => ({
   comment: {
@@ -117,7 +119,9 @@ export const Wave = () => {
   const [isFollowingUser, setisFollowingUser] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const [opened, { open, close }] = useDisclosure(false);
-
+  const [openedSub1, { toggle: toggleSub1 }] = useDisclosure(false);
+  const [openedSub2, { toggle: toggleSub2 }] = useDisclosure(false);
+  const [openedSub3, { toggle: toggleSub3 }] = useDisclosure(false);
   const [openedSub, { open: openSub, close: closeSub }] = useDisclosure(false);
   // Retrieve the user's DESO balance from profile.DESOBalanceNanos
   const userDESOBalance = profile.DESOBalanceNanos;
@@ -489,8 +493,8 @@ export const Wave = () => {
       await createPostAssociation({
         TransactorPublicKeyBase58Check: currentUser.PublicKeyBase58Check,
         PostHashHex: postHash,
-        AssociationType: "Reaction",
-        AssociationValue: "Heart",
+        AssociationType: "REACTION",
+        AssociationValue: "LOVE",
         MinFeeRateNanosPerKB: 1000,
       });
       setHeartSuccess(true);
@@ -642,15 +646,18 @@ export const Wave = () => {
               transitionProps={{ transition: "fade" }}
             >
               <Paper shadow="xl" p="xl" withBorder>
-                <Text fw={700} c="dimmed" align="center">
+              <Center>
+                  <GiWaveSurfer size="3rem" />
+                </Center>
+                <Space h="xs" />
+                <Text fz="xl" fw={700} c="dimmed" align="center" variant="gradient"
+      gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}>
                   {" "}
                   Join {userName}'s Wave and Subscribe to contribute to their
                   growth.
                 </Text>
                 <Space h="md" />
-                <Center>
-                  <IconHeartHandshake size="2.3rem" />
-                </Center>
+                
                 <Space h="md" />
                 <Center>
                   <Box>
@@ -664,26 +671,50 @@ export const Wave = () => {
                             <Divider my="sm" />
                             <Space h="md" />
                             <List.Item>
-                              <Text size="xs">1-Month Subcription</Text>
+                              <Text size="xs">1 Month Subcription</Text>
                             </List.Item>
                             <List.Item>
-                              <Text size="xs">1-Wave Point</Text>
+                              <Text size="xs">1 Month Subscriber Badge</Text>
+                            </List.Item>
+                        
+                            <List.Item>
+                              <Text size="xs">1 Month Subscriber NFT</Text>
                             </List.Item>
                             <List.Item>
-                              <Text size="xs">1-Month Subscriber NFT</Text>
+                            <Text size="xs">{`1 ${userName} Points`}</Text>
                             </List.Item>
+                            
                           </List>
                           <Space h="md" />
                           <Center>
+                        
+       
                             <Button
-                              onClick={subTier1}
-                              variant="light"
+                              onClick={toggleSub1}
+                              variant="default"
                               radius="md"
                               fullWidth
                             >
                               $5.00
                             </Button>
+                         
                           </Center>
+                          <Space h="md" />
+                          <Collapse in={openedSub1}>
+                          <Paper shadow="xl" radius="xl" p="xl" withBorder>
+                            <Text fz="sm" fz="sm" fw={500}>Confirm Purchase</Text>
+                            <Divider my="sm" />
+                            <Button
+                              onClick={subTier1}
+                              variant="light"
+                              radius="md"
+                              
+                              leftIcon={<IconHeartHandshake size="1.5rem"  />}
+                            >
+                              Subscribe
+                            </Button>
+                            </Paper>
+                        </Collapse>
                         </Paper>
                       </Grid.Col>
                       <Grid.Col lg={4} sm={7}>
@@ -695,26 +726,45 @@ export const Wave = () => {
                             <Divider my="sm" />
                             <Space h="md" />
                             <List.Item>
-                              <Text size="xs">3-Month Subcription</Text>
+                              <Text size="xs">3 Month Subcription</Text>
                             </List.Item>
                             <List.Item>
-                              <Text size="xs">3-Wave Points</Text>
+                              <Text size="xs">3 Month Subscriber Badge</Text>
+                            </List.Item>
+                         
+                            <List.Item>
+                              <Text size="xs">3 Month Subscriber NFT</Text>
                             </List.Item>
                             <List.Item>
-                              <Text size="xs">3-Month Subscriber NFT</Text>
+                            <Text size="xs">{`3 ${userName} Points`}</Text>
                             </List.Item>
                           </List>
                           <Space h="md" />
                           <Center>
                             <Button
-                              onClick={subTier2}
-                              variant="light"
+                              onClick={toggleSub2}
+                              variant="default"
                               radius="md"
                               fullWidth
                             >
                               $15.00
                             </Button>
                           </Center>
+                          <Space h="md" />
+                          <Collapse in={openedSub2}>
+                          <Paper shadow="xl" radius="xl" p="xl" withBorder>
+                            <Text fz="sm" fz="sm" fw={500}>Confirm Purchase</Text>
+                            <Divider my="sm" />
+                            <Button
+                              onClick={subTier2}
+                              variant="light"
+                              radius="md"
+                              leftIcon={<IconHeartHandshake size="1.5rem"  />}
+                            >
+                              Subscribe
+                            </Button>
+                            </Paper>
+                        </Collapse>
                         </Paper>
                       </Grid.Col>
                       <Grid.Col lg={4} sm={7}>
@@ -726,26 +776,45 @@ export const Wave = () => {
                             <Divider my="sm" />
                             <Space h="md" />
                             <List.Item>
-                              <Text size="xs">6-Month Subcription</Text>
+                              <Text size="xs">6 Month Subcription</Text>
                             </List.Item>
                             <List.Item>
-                              <Text size="xs">6-Wave Points</Text>
+                              <Text size="xs">6 Month Subscriber Badge</Text>
                             </List.Item>
                             <List.Item>
-                              <Text size="xs">6-Month Subscriber NFT</Text>
+                              <Text size="xs">6 Month Subscriber NFT</Text>
+                            </List.Item>
+                   
+                            <List.Item>
+                            <Text size="xs">{`6 ${userName} Points`}</Text>
                             </List.Item>
                           </List>
                           <Space h="md" />
                           <Center>
                             <Button
-                              onClick={subTier3}
-                              variant="light"
+                              onClick={toggleSub3}
+                              variant="default"
                               radius="md"
                               fullWidth
                             >
                               $25.00
                             </Button>
                           </Center>
+                          <Space h="md" />
+                          <Collapse in={openedSub3}>
+                          <Paper shadow="xl"  radius="xl" p="xl" withBorder>
+                            <Text fz="sm" fz="sm" fw={500}>Confirm Purchase</Text>
+                            <Divider my="sm" />
+                            <Button
+                              onClick={subTier3}
+                              variant="light"
+                              radius="md"
+                              leftIcon={<IconHeartHandshake size="1.5rem"  />}
+                            >
+                              Subscribe
+                            </Button>
+                            </Paper>
+                        </Collapse>
                         </Paper>
                       </Grid.Col>
                     </Grid>
