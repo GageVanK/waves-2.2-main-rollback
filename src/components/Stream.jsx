@@ -34,7 +34,8 @@ import {
   Progress,
   Divider, 
   Accordion, 
-  useMantineTheme, rem, Collapse, UnstyledButton, ActionIcon, PasswordInput, Switch, HoverCard, Overlay
+  useMantineTheme, rem, Collapse, UnstyledButton, ActionIcon, PasswordInput, Switch, HoverCard, Overlay,
+  Image
 } from "@mantine/core";
 import { TwitchPlayer, TwitchChat } from "react-twitch-embed";
 import { IconCopy,IconRocket,  IconCheck, IconScreenShare, IconAt, IconBrandYoutube, IconBrandTwitch, IconKey, IconUser } from "@tabler/icons-react";
@@ -46,6 +47,7 @@ import { GrLaunch } from 'react-icons/gr';
 import { VscKey } from 'react-icons/vsc';
 import { BiUserCircle } from 'react-icons/bi';
 import { TiInfoLargeOutline } from 'react-icons/ti';
+import xeenon from "../assets/xeenonLogo.gif"
 
 
 const useStyles = createStyles((theme) => ({
@@ -84,7 +86,7 @@ export const Stream = () => {
   const handleReady = (e) => {
     embed.current = e;
   };
-  const getColor = (color: string) => theme.colors[color][theme.colorScheme === 'dark' ? 8 : 7];
+  const getColor = (color) => theme.colors[color][theme.colorScheme === 'dark' ? 8 : 7];
   const interval = useInterval(
     () =>
       setProgress((current) => {
@@ -218,7 +220,27 @@ console.log(stream)
        };
 
 
- 
+   const [xeenonStreamKey, setXeenonStreamKey] = useState("");
+    const [xeenonStreamURL, setXeenonStreamURL] = useState("");
+     const { mutate: xeenonMultistream, error: xeenonMulti,  } = useUpdateStream({
+       streamId,
+       multistream: {
+         targets: [
+           {
+             profile: 'source',
+             spec: {
+               name: "Xeenon",
+               url: `${xeenonStreamURL}${xeenonStreamKey}` // Use the RTMP URL entered by the user
+             },
+           },
+         ],
+       },
+         
+       });
+   
+       const handleEnableXeenonMultistream = async () => {
+        xeenonMultistream?.()
+       };
 
 
 
@@ -661,7 +683,33 @@ console.log(stream)
       </Accordion.Item>
 
     
+      <Accordion.Item value="Xeenon">
+      <Accordion.Control icon={<Image src={xeenon} height="33px" width="22px"  />}> <Space w={1} /><Text c="dimmed" fw={500}>Xeenon</Text></Accordion.Control>
+      <Accordion.Panel> 
+      <Input
+      icon={<AiOutlineLink />}
+      placeholder="Enter Xeenon Stream URL"
+      radius="md"
+      value={xeenonStreamURL}
+      onChange={(e) => setXeenonStreamURL(e.target.value)}
+      
+    />
 
+<Space h="md" />
+      <PasswordInput 
+      icon={<VscKey />}
+      placeholder="Enter Xeenon Stream Key"
+      radius="md"
+      value={xeenonStreamKey}
+      onChange={(e) => setXeenonStreamKey(e.target.value)}
+    />  <Space h="md" />
+    <Group position='right'>
+     <Button        onClick={handleEnableXeenonMultistream}  rightIcon={<IconRocket size="1rem" />} variant="light" size="xs">
+      Launch
+    </Button>
+    </Group>
+   </Accordion.Panel>
+      </Accordion.Item>
      
     </Accordion>
      
