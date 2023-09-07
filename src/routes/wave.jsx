@@ -719,10 +719,15 @@ export const Wave = () => {
                           
                        
                             </Center>
+                            <Space h="xs" />
+                            <Text align="center" fz="xs"  fw={500} c="dimmed"><ThemeIcon radius="xl" size={14} variant="outline">
+                              <TiInfoLargeOutline    />
+     </ThemeIcon> This will instantly be paid out to {`${userName}`}</Text>
+                           
                             <Divider my="sm" />
                          
                            
-                            <Center>
+                          
                             <Button
                               onClick={subTier1}
                               variant="light"
@@ -732,13 +737,8 @@ export const Wave = () => {
                             >
                               Subscribe
                             </Button>
-                             </Center>
-                             <Space h="xs" />
                              
-                            <Text align="center" fz="xs"  fw={500} c="dimmed"><ThemeIcon radius="xl" size={14} variant="outline">
-                             <TiInfoLargeOutline    />
-    </ThemeIcon> This will instantly be paid out to {`${userName}`}</Text>
-                          
+                           
                        
                            
                             </Paper>
@@ -784,10 +784,16 @@ export const Wave = () => {
                              <Center>
                             <Text fz="sm" fz="sm" fw={500}>Confirm Purchase</Text>
                             </Center>
+                            <Space h="xs" />
+                            <Text align="center" fz="xs"  fw={500} c="dimmed"><ThemeIcon radius="xl" size={14} variant="outline">
+                              <TiInfoLargeOutline    />
+     </ThemeIcon> This will instantly be paid out to {`${userName}`}</Text>
+                           
                             <Divider my="sm" />
                         
-                            <Center>
+                     
                             <Button
+                            fullWidth
                               onClick={subTier2}
                               variant="light"
                               radius="md"
@@ -795,13 +801,8 @@ export const Wave = () => {
                             >
                               Subscribe
                             </Button>
-                             </Center>
-                             <Space h="xs" />
-                             
-                             <Text align="center" fz="xs"  fw={500} c="dimmed"><ThemeIcon radius="xl" size={14} variant="outline">
-                              <TiInfoLargeOutline    />
-     </ThemeIcon> This will instantly be paid out to {`${userName}`}</Text>
-                           
+                    
+                                                       
                             </Paper>
                         </Collapse>
                         </Paper>
@@ -845,24 +846,26 @@ export const Wave = () => {
                              <Center>
                             <Text fz="sm" fz="sm" fw={500}>Confirm Purchase</Text>
                             </Center>
+                            <Space h="xs" />
+                            <Text align="center" fz="xs"  fw={500} c="dimmed"><ThemeIcon radius="xl" size={14} variant="outline">
+                              <TiInfoLargeOutline    />
+     </ThemeIcon> This will instantly be paid out to {`${userName}`}</Text>
+                           
                             <Divider my="sm" />
                         
-                            <Center>
+                       
                             <Button
                               onClick={subTier3}
                               variant="light"
                               radius="md"
+                              fullWidth
                               leftIcon={<IconHeartHandshake size="1.5rem"  />}
                             >
                               Subscribe
                             </Button>
-                             </Center>
-                             <Space h="xs" />
-                             
-                             <Text align="center" fz="xs"  fw={500} c="dimmed"><ThemeIcon radius="xl" size={14} variant="outline">
-                              <TiInfoLargeOutline    />
-     </ThemeIcon> This will instantly be paid out to {`${userName}`}</Text>
+                            
                            
+                            
                             </Paper>
                         </Collapse>
 
