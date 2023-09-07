@@ -684,7 +684,7 @@ console.log(stream)
 
     
       <Accordion.Item value="Xeenon">
-      <Accordion.Control icon={<Image src={xeenon} height="33px" width="22px"  />}> <Space w={1} /><Text c="dimmed" fw={500}>Xeenon</Text></Accordion.Control>
+      <Accordion.Control icon={<Image src={xeenon} height="33px" width="22px"  />}> <Text c="dimmed" style={{ marginLeft: '7px' }} fw={500}>Xeenon</Text></Accordion.Control>
       <Accordion.Panel> 
       <Input
       icon={<AiOutlineLink />}
