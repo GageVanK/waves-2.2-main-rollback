@@ -66,7 +66,7 @@ export const MOCKDATA = [
     icon: GiBigWave,
     title: 'Why Waves?',
     description:
-      'Waves is not another shitcoin project. It leverages the true power of Crypto and Blockchain technology to provide real utility to Streamers!',
+      'Waves is not a shitcoin. Waves leverages the true power of Crypto and Blockchain technology to provide real utility to Streamers!',
   },
   {
     icon: RiDatabaseLine,
