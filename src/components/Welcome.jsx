@@ -90,7 +90,7 @@ export const MOCKDATA = [
     icon: RiCheckboxMultipleLine,
     title: 'Multi-Streaming',
     description:
-      'Waves aims to empower streamerw by providing tools to stream on all other platforms. Currently, waves supports multistreaming to YouTube, TikTok, and Twitch, with more platforms possible via requests.',
+      'Waves aims to empower streamers by providing tools to stream on all other platforms. Currently, waves supports multistreaming to YouTube, TikTok, and Twitch, with more platforms possible via requests.',
   },
   {
     icon: PiUsersThreeDuotone,
