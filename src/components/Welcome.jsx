@@ -19,7 +19,7 @@ import { GiWaveCrest } from "react-icons/gi";
 import { VscLink } from "react-icons/vsc";
 import { BiWorld } from "react-icons/bi";
 import { MdOutlineAttachMoney } from "react-icons/md";
-import { BiWorld } from "react-icons/bi";
+
 import { GrVirtualStorage } from "react-icons/gr";
 import { TbMoneybag } from "react-icons/tb";
 import { GrMultiple } from "react-icons/gr";
