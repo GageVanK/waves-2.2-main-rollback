@@ -20,9 +20,9 @@ import { VscLink } from "react-icons/vsc";
 import { BiWorld } from "react-icons/bi";
 import { MdOutlineAttachMoney } from "react-icons/md";
 
-import { GrVirtualStorage } from "react-icons/gr";
-import { TbMoneybag } from "react-icons/tb";
-import { GrMultiple } from "react-icons/gr";
+import { RiDatabaseLine } from "react-icons/ri";
+import { GiReceiveMoney } from "react-icons/gi";
+import { RiCheckboxMultipleLine } from "react-icons/ri";
 import { PiUsersThreeDuotone } from "react-icons/pi";
 
 
@@ -69,7 +69,7 @@ export const MOCKDATA = [
       'Waves is not another shitcoin project. It leverages the true power of Crypto and Blockchain technology to provide real utility to Streamers!',
   },
   {
-    icon: GrVirtualStorage,
+    icon: RiDatabaseLine,
     title: 'On-Chain Storage',
     description:
       'Waves is built on the DeSo Blockchain, offering an alternative to private, centralized databases. It enables transparent data allowing users as much access as the builders. Traditional social platforms often use private data to sell to advertisers, but Waves provides a storage alternative to mitigate this practice.',
@@ -87,7 +87,7 @@ export const MOCKDATA = [
       'Waves is powered by Deso Wallets, enabling instant Fan-to-Creator Subscription payments. No more complex monetization processes, and currently, Waves pays out 100% directly to creators. Future Waves versions may take up to 20% for platform expenses.',
   },
   {
-    icon: GrMultiple,
+    icon: RiCheckboxMultipleLine,
     title: 'Multi-Streaming',
     description:
       'Waves aims to empower streamerw by providing tools to stream on all other platforms. Currently, waves supports multistreaming to YouTube, TikTok, and Twitch, with more platforms possible via requests.',
@@ -105,7 +105,7 @@ export const MOCKDATA = [
       'Waves leverages blockchain technology to facilitate interoperability between platforms, ensuring that your content remains accessible across all Deso Apps and is Censorship Resistant.',
   },
   {
-    icon: TbMoneybag,
+    icon: GiReceiveMoney,
     title: 'NFT Streams & Clips',
     description:
       'Future versions of Waves will support NFT Streams and Clips, giving streamers greater longevity and complete control over pricing and royalty percentages of any future sales of the NFT.',
