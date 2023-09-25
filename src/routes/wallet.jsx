@@ -138,7 +138,7 @@ useEffect(() => {
               <Paper shadow="xl" p="lg" withBorder>
                 <Center>
                   <Text c="dimmed" fw={700}>
-                    Please Sign Up or Login to view your Profile.
+                    Please Sign Up or Login to view your Wallet.
                   </Text>
                 </Center>
                 <Space h="md" />

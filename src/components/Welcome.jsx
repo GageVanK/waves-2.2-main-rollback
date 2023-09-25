@@ -90,7 +90,7 @@ export const MOCKDATA = [
     icon: RiCheckboxMultipleLine,
     title: 'Multi-Platform Streaming',
     description:
-      'Waves aims to empower streamers by providing tools to stream to multiple platforms right from your Waves Dashboard, maxmizing your audience. Currently, waves supports multistreaming to YouTube, Kick, and Twitch, with more platforms possible via requests.',
+      'Waves aims to empower streamers by providing tools to stream to multiple platforms right from your Waves Dashboard, maxmizing your audience. Currently, waves supports multistreaming to YouTube, Kick, and Twitch. Additional platforms can be added upon request.',
   },
   {
     icon: PiUsersThreeDuotone,
