@@ -141,6 +141,12 @@ useEffect(() => {
                     Please Sign Up or Login to view your Wallet.
                   </Text>
                 </Center>
+                <Space h="xs" />
+                <Center>
+                  <Text size="sm"  fw={555}>
+                    HeroSwap can be used Anonymously or Login to save 50% in fees.
+                  </Text>
+                </Center>
                 <Space h="md" />
                 <Center>
                   <Button
