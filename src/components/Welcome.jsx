@@ -126,7 +126,7 @@ export function Feature({ icon: Icon, title, description }) {
         {description}
       </Text>
     </div>
-    <Space h="xs"/>
+    <Space h="lg"/>
     </>
   );
 } 
