@@ -66,7 +66,7 @@ export const MOCKDATA = [
     icon: GiBigWave,
     title: 'Why Waves?',
     description:
-      'Waves is not a shitcoin. Waves leverages the true power of Crypto and Blockchain technology to provide real utility to Streamers!',
+      'Waves is not a shitcoin. Waves leverages the true power of Crypto and Blockchain technology via the DeSo Blockchain to provide real utility to Streamers!',
   },
   {
     icon: RiDatabaseLine,
@@ -84,13 +84,13 @@ export const MOCKDATA = [
     icon: MdOutlineAttachMoney,
     title: 'Monetization',
     description:
-      'Waves is powered by Deso Wallets, enabling instant Fan-to-Creator Subscription payments. No more complex monetization processes, and currently, Waves pays out 100% directly to creators. Future Waves versions may take up to 20% for platform expenses.',
+      'Waves is powered by Deso Wallets, enabling instant Fan-to-Creator Subscription payments. No more jumping through hoops to monetize your content. Currently, Waves pays out 100% directly to creators. Future Waves versions may take up to 20% for platform expenses.',
   },
   {
     icon: RiCheckboxMultipleLine,
-    title: 'Multi-Streaming',
+    title: 'Multi-Platform Streaming',
     description:
-      'Waves aims to empower streamers by providing tools to stream on all other platforms. Currently, waves supports multistreaming to YouTube, TikTok, and Twitch, with more platforms possible via requests.',
+      'Waves aims to empower streamers by providing tools to stream to multiple platforms right from your Waves Dashboard, maxmizing your audience. Currently, waves supports multistreaming to YouTube, Kick, and Twitch, with more platforms possible via requests.',
   },
   {
     icon: PiUsersThreeDuotone,
@@ -136,7 +136,7 @@ export function Welcome() {
   const features = MOCKDATA.map((feature, index) => <Feature {...feature} key={index} />);
 
   return (
-    <Card shadow="xl" p="xl" radius="xl" withBorder>
+   <>
       
       <Title className={classes.title} align="center"   variant="gradient"
       gradient={{ from: 'blue', to: 'cyan', deg: 90 }}>Waves</Title>
@@ -186,6 +186,6 @@ export function Welcome() {
           Sign Up
         </Button>
       </Group>
-    </Card>
+      </>
   );
 }
